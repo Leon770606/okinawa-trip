@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>沖繩 5D4N 親子自駕慢活之旅</title>
+  <title>沖繩 5D4N 親子自駕遊行程表</title>
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Phosphor Icons CDN -->
@@ -25,43 +25,45 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-16">
 
-  <!-- 頂部導航與標題 -->
-  <header class="bg-gradient-to-r from-sky-600 to-teal-500 text-white shadow-md sticky top-0 z-40">
-    <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+  <!-- Header Banner -->
+  <header class="bg-gradient-to-r from-sky-600 via-teal-600 to-sky-700 text-white shadow-md sticky top-0 z-40">
+    <div class="max-w-4xl mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div>
         <div class="flex items-center gap-2">
-          <i class="ph-bold ph-sun text-amber-300 text-2xl"></i>
-          <h1 id="siteTitle" class="text-xl md:text-2xl font-black tracking-wide">沖繩自駕之旅</h1>
+          <i class="ph-fill ph-sun text-amber-300 text-2xl animate-spin-slow"></i>
+          <h1 id="tripTitle" class="text-xl md:text-2xl font-black tracking-wide">沖繩親子自駕・5天4夜度假全紀錄</h1>
         </div>
-        <p id="siteSubtitle" class="text-xs text-sky-100 mt-1">載入行程中...</p>
+        <p class="text-xs text-sky-100 mt-0.5">2026/09/26（五）- 09/30（二）｜ 與 itinerary.md 自動同步</p>
       </div>
 
-      <!-- 快速即時搜尋框 -->
+      <!-- 快速搜尋框 -->
       <div class="relative w-full md:w-64">
-        <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
+        <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
         <input
           id="searchInput"
           type="text"
-          placeholder="搜尋景點、美食、備註..."
-          class="w-full pl-9 pr-3 py-1.5 text-sm text-slate-800 rounded-full bg-white/95 focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
+          placeholder="搜尋景點、餐廳、備註..."
+          class="w-full pl-9 pr-3 py-1.5 text-sm text-slate-800 rounded-full bg-white/95 focus:outline-none focus:ring-2 focus:ring-amber-300 transition shadow-inner"
         />
       </div>
     </div>
 
-    <!-- 天數切換頁籤（由 JS 自動產生） -->
-    <div id="tabNav" class="max-w-4xl mx-auto px-4 mt-2 overflow-x-auto custom-scrollbar flex gap-2 pb-2"></div>
+    <!-- Day Navigation Bar -->
+    <div id="dayTabsContainer" class="max-w-4xl mx-auto px-4 overflow-x-auto custom-scrollbar flex gap-2 pb-2.5 pt-1">
+      <!-- 動態生成天數切換按鈕 -->
+    </div>
   </header>
 
-  <!-- 主畫面 -->
-  <main class="max-w-4xl mx-auto px-4 mt-6">
+  <!-- 主內容區 -->
+  <main class="max-w-4xl mx-auto px-4 mt-5">
 
-    <!-- 進度統計條 -->
-    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-6">
+    <!-- 行程整體進度條 -->
+    <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-5">
       <div class="flex items-center justify-between text-xs text-slate-500 font-bold mb-2">
         <span class="flex items-center gap-1.5">
           <i class="ph-bold ph-check-circle text-emerald-500 text-base"></i> 行程打卡進度
         </span>
-        <span id="progressText">0 / 0 完成</span>
+        <span id="progressText">0 / 0 完成 (0%)</span>
       </div>
       <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
         <div id="progressBar" class="bg-gradient-to-r from-teal-400 to-sky-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
@@ -70,20 +72,21 @@
 
     <!-- 行程卡片容器 -->
     <div id="itineraryContainer" class="space-y-4">
-      <div class="p-8 text-center text-slate-400 bg-white rounded-2xl shadow-sm border border-slate-100">
-        正在解析 itinerary.md 檔案...
+      <div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">
+        <i class="ph ph-spinner animate-spin text-2xl text-sky-500 mb-2"></i>
+        <p class="text-sm">正在載入行程資料...</p>
       </div>
     </div>
 
-    <!-- 隨身提醒卡片 -->
-    <div class="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm text-amber-900 space-y-2">
+    <!-- 必備貼心提示區 -->
+    <div class="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm text-amber-900 space-y-2 shadow-sm">
       <div class="font-bold flex items-center gap-2 text-amber-800">
-        <i class="ph-fill ph-warning-circle text-lg"></i> 自駕出遊重要提醒：
+        <i class="ph-fill ph-warning-circle text-lg"></i> 自駕出遊重要備忘提醒：
       </div>
-      <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
-        <li><strong>租車必帶</strong>：台灣駕照正本 ＋ 日文翻譯本 ＋ 護照。</li>
-        <li><strong>兒童座椅</strong>：日本規定 6 歲以下乘車必須配置安全座椅。</li>
-        <li><strong>還車加滿油</strong>：請使用「Regular（紅色油槍）」加滿，並保留加油發票供查驗。</li>
+      <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700 leading-relaxed">
+        <li><strong>取車必備證件</strong>：台灣駕照「正本」＋ 日文譯本 ＋ 護照（缺一不可）。</li>
+        <li><strong>兒童安全座椅</strong>：未滿 6 歲孩童在日本法規上必須乘坐兒童安全座椅，取車確認安裝穩固。</li>
+        <li><strong>還車油料要求</strong>：Day 5 還車前需於營業所指定加油站「レギュラー（紅色 Regular 油槍）」加滿，並保留加油發票供門市確認。</li>
       </ul>
     </div>
   </main>
@@ -93,156 +96,187 @@
     let currentDayIdx = 0;
     let checkedItems = JSON.parse(localStorage.getItem('okinawa_trip_checked') || '{}');
 
-    // 解析 itinerary.md 檔案結構
+    // 解析 itinerary.md 的專用解析器（支援 ### 主行程 與 #### 子項目）
     function parseMarkdown(mdText) {
-      const lines = mdText.split('\n');
-      let title = "沖繩 5D4N 親子自駕慢活之旅";
-      let subtitle = "2026/09/26（五）- 09/30（二）";
+      const lines = mdText.split(/\r?\n/);
       const days = [];
       let currentDay = null;
       let currentItem = null;
-      let itemIdCount = 1;
+      let currentSubItem = null;
 
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
 
-        if (line.startsWith('# ')) {
-          title = line.replace('# ', '').trim();
-        } else if (line.startsWith('> 日期：')) {
-          subtitle = line.replace('> 日期：', '').trim();
-        } else if (line.startsWith('## Day')) {
-          const dayMatch = line.match(/^##\s*Day\s*(\d+)[:：]\s*(.*?)\s+(.*)$/);
-          if (dayMatch) {
-            currentDay = {
-              day: parseInt(dayMatch[1], 10),
-              date: dayMatch[2],
-              title: dayMatch[3],
-              badge: "住宿：未定",
-              items: []
-            };
-          } else {
-            currentDay = {
-              day: days.length + 1,
-              date: "",
-              title: line.replace('## ', ''),
-              badge: "",
-              items: []
-            };
-          }
+        // 匹配 Day 標題: ## Day 1：9/26（六）初抵沖繩・預約和牛燒肉盛宴
+        const dayMatch = line.match(/^##\s+Day\s*(\d+)[：:]\s*(.+)/i);
+        if (dayMatch) {
+          currentDay = {
+            day: parseInt(dayMatch[1]),
+            rawTitle: dayMatch[2].trim(),
+            badge: "住宿待定",
+            items: []
+          };
           days.push(currentDay);
           currentItem = null;
-        } else if (line.startsWith('* 住宿：') && currentDay) {
-          currentDay.badge = line.replace('* ', '');
-        } else if (line.startsWith('### ') && currentDay) {
-          const itemMatch = line.match(/^###\s*(.*?)【(.*?)】/);
+          currentSubItem = null;
+          continue;
+        }
+
+        // 匹配住宿資訊: > **今日住宿**：[THE 皇家花園酒店 ICONIC 那霸]...
+        if (line.startsWith('> **今日住宿**：') && currentDay) {
+          currentDay.badge = line.replace('> **今日住宿**：', '').replace(/[\[\]]/g, '').trim();
+          continue;
+        }
+
+        // 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】
+        const itemMatch = line.match(/^###\s+([\d:~\-–\s]+)【(.+?)】/);
+        if (itemMatch && currentDay) {
+          const timeStr = itemMatch[1].trim();
+          const titleStr = itemMatch[2].trim();
+          const itemId = `d${currentDay.day}-${currentDay.items.length + 1}`;
+
           currentItem = {
-            id: `item-${itemIdCount++}`,
-            time: itemMatch ? itemMatch[1].trim() : "",
-            title: itemMatch ? itemMatch[2].trim() : line.replace('### ', ''),
-            tag: "行程",
+            id: itemId,
+            time: timeStr,
+            title: titleStr,
+            tag: getTagFromTitle(titleStr),
+            location: "",
+            desc: "",
+            subItems: []
+          };
+          currentDay.items.push(currentItem);
+          currentSubItem = null;
+          continue;
+        }
+
+        // 匹配子項目: #### [順位 1（首選推薦）] Taco Rice Cafe Kijimuna
+        const subMatch = line.match(/^####\s+(.+)/);
+        if (subMatch && currentItem) {
+          const rawSubTitle = subMatch[1].trim();
+          let tag = "";
+          let name = rawSubTitle;
+          const tagMatch = rawSubTitle.match(/^\[(.+?)\]\s*(.+)/);
+          if (tagMatch) {
+            tag = tagMatch[1].trim();
+            name = tagMatch[2].trim();
+          }
+
+          currentSubItem = {
+            name: name,
+            tag: tag,
             location: "",
             desc: ""
           };
-          currentDay.items.push(currentItem);
-        } else if (currentItem) {
-          if (line.startsWith('* 分類：')) {
-            currentItem.tag = line.replace('* 分類：', '').trim();
-          } else if (line.startsWith('* 地點：')) {
-            currentItem.location = line.replace('* 地點：', '').trim();
-          } else if (line.startsWith('* 說明：')) {
-            currentItem.desc = line.replace('* 說明：', '').trim();
-          } else if (line.startsWith('* ')) {
-            currentItem.desc += (currentItem.desc ? '\n' : '') + line.replace('* ', '').trim();
+          currentItem.subItems.push(currentSubItem);
+          continue;
+        }
+
+        // 匹配屬性條列: * 地點：xxx / * 推薦：xxx / * 說明：xxx
+        if (line.startsWith('* 地點：') || line.startsWith('- 地點：')) {
+          const loc = line.replace(/^[\*\-]\s*地點：\s*/, '').replace(/[\[\]]/g, '').trim();
+          if (currentSubItem) {
+            currentSubItem.location = loc;
+          } else if (currentItem) {
+            currentItem.location = loc;
           }
+          continue;
+        }
+
+        if (line.startsWith('* 說明：') || line.startsWith('- 說明：') || line.startsWith('* 推薦：') || line.startsWith('- 推薦：')) {
+          const descText = line.replace(/^[\*\-]\s*(說明|推薦)：\s*/, '').trim();
+          if (currentSubItem) {
+            currentSubItem.desc = (currentSubItem.desc ? currentSubItem.desc + ' ' : '') + descText;
+          } else if (currentItem) {
+            currentItem.desc = (currentItem.desc ? currentItem.desc + ' ' : '') + descText;
+          }
+          continue;
+        }
+
+        // 一般條列或文字描述
+        if (line.startsWith('* ') || line.startsWith('- ')) {
+          const pureText = line.replace(/^[\*\-]\s*/, '').trim();
+          if (currentSubItem) {
+            currentSubItem.desc = (currentSubItem.desc ? currentSubItem.desc + '\n' : '') + pureText;
+          } else if (currentItem) {
+            currentItem.desc = (currentItem.desc ? currentItem.desc + '\n' : '') + pureText;
+          }
+          continue;
         }
       }
 
-      return { title, subtitle, days };
+      return days;
     }
 
-    // 取得 itinerary.md 內容並初始化
-    async function loadItinerary() {
-      try {
-        // 使用 timestamp 參數防止快取，確保在 GitHub Pages 上更新 md 後能即時顯示
-        const res = await fetch('itinerary.md?t=' + new Date().getTime());
-        if (!res.ok) throw new Error("找不到 itinerary.md 檔案");
-        const mdText = await res.text();
-        const parsed = parseMarkdown(mdText);
+    // 根據標題自動判斷標籤
+    function getTagFromTitle(title) {
+      if (title.includes('飛行') || title.includes('接駁') || title.includes('開車') || title.includes('移動') || title.includes('還車') || title.includes('退房')) return '交通';
+      if (title.includes('餐') || title.includes('燒肉') || title.includes('拉麵') || title.includes('飯糰') || title.includes('海鮮') || title.includes('壽司')) return '美食';
+      if (title.includes('水族館') || title.includes('玩水') || title.includes('海灘') || title.includes('動物園') || title.includes('公園') || title.includes('探索館')) return '玩樂';
+      if (title.includes('逛街') || title.includes('採買') || title.includes('血拚') || title.includes('唐吉訶德') || title.includes('玩具') || title.includes('寶可夢')) return '購物';
+      if (title.includes('Check-in') || title.includes('整裝') || title.includes('回房')) return '住宿/休憩';
+      return '行程';
+    }
 
-        document.getElementById('siteTitle').innerText = parsed.title;
-        document.getElementById('siteSubtitle').innerText = parsed.subtitle;
-        tripData = parsed.days;
-
-        buildTabs();
-        render();
-      } catch (err) {
-        console.error(err);
-        document.getElementById('itineraryContainer').innerHTML = `
-          <div class="p-6 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
-            <strong>讀取 itinerary.md 失敗：</strong><br>
-            請確認 <code>itinerary.md</code> 與 <code>index.html</code> 位於同一個資料夾，且已推送到 GitHub 上。
-          </div>
+    // 渲染天數切換按鈕
+    function renderTabs() {
+      const container = document.getElementById('dayTabsContainer');
+      container.innerHTML = tripData.map((d, idx) => {
+        const isActive = idx === currentDayIdx;
+        const activeClass = "bg-white text-sky-700 shadow-sm";
+        const inactiveClass = "bg-white/20 hover:bg-white/30 text-white";
+        return `
+          <button onclick="switchTab(${idx})" class="shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold transition ${isActive ? activeClass : inactiveClass}">
+            Day ${d.day}
+          </button>
         `;
-      }
+      }).join('');
     }
 
-    // 建立天數頁籤
-    function buildTabs() {
-      const tabNav = document.getElementById('tabNav');
-      tabNav.innerHTML = '';
-      tripData.forEach((d, idx) => {
-        const btn = document.createElement('button');
-        btn.className = idx === 0 
-          ? "tab-btn active shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white text-sky-700 shadow-sm transition"
-          : "tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition";
-        btn.innerText = `Day ${d.day} (${d.date.split('（')[0]})`;
-        btn.onclick = () => switchTab(idx);
-        tabNav.appendChild(btn);
-      });
-    }
-
-    // 渲染卡片與內容
+    // 渲染卡片內容
     function render() {
       const container = document.getElementById('itineraryContainer');
       const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
 
-      if (!tripData || tripData.length === 0) return;
+      if (!tripData || tripData.length === 0) {
+        container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl">沒有行程資料</div>`;
+        return;
+      }
 
+      // 全域搜尋模式
       if (searchTerm) {
-        let resultsHTML = `<div class="text-xs font-bold text-slate-500 mb-3">搜尋「${searchTerm}」的結果：</div>`;
-        let foundAny = false;
+        let resultsHTML = `<div class="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="ph ph-magnifying-glass"></i> 搜尋「${searchTerm}」的結果：</div>`;
+        let found = false;
 
-        tripData.forEach((dayObj) => {
+        tripData.forEach(dayObj => {
           dayObj.items.forEach(item => {
-            if (item.title.toLowerCase().includes(searchTerm) ||
-                item.desc.toLowerCase().includes(searchTerm) ||
-                item.time.toLowerCase().includes(searchTerm) ||
-                item.tag.toLowerCase().includes(searchTerm)) {
-              foundAny = true;
-              resultsHTML += renderCard(item, dayObj.day, dayObj.date);
+            const matchMain = item.title.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm) || item.location.toLowerCase().includes(searchTerm);
+            const matchSub = item.subItems.some(s => s.name.toLowerCase().includes(searchTerm) || s.desc.toLowerCase().includes(searchTerm) || s.location.toLowerCase().includes(searchTerm));
+
+            if (matchMain || matchSub) {
+              found = true;
+              resultsHTML += renderCard(item, dayObj.day);
             }
           });
         });
 
-        if (!foundAny) {
-          resultsHTML += `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl shadow-sm border border-slate-100">沒有找到符合的行程項目</div>`;
+        if (!found) {
+          resultsHTML += `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">未找到相符的景點或餐廳</div>`;
         }
         container.innerHTML = resultsHTML;
         return;
       }
 
+      // 依目前天數渲染
       const dayData = tripData[currentDayIdx];
       let html = `
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 gap-2 mb-4">
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
-            <div class="text-xs font-black text-sky-600 uppercase tracking-widest">Day ${dayData.day} ・ ${dayData.date}</div>
-            <h2 class="text-lg md:text-xl font-black text-slate-800">${dayData.title}</h2>
+            <div class="text-xs font-black text-sky-600 uppercase tracking-wider">Day ${dayData.day}</div>
+            <h2 class="text-base md:text-lg font-black text-slate-800">${dayData.rawTitle}</h2>
           </div>
-          ${dayData.badge ? `
-            <span class="inline-flex items-center gap-1 text-xs bg-sky-50 text-sky-700 px-3 py-1 rounded-full font-medium self-start sm:self-auto">
-              <i class="ph-bold ph-bed"></i> ${dayData.badge}
-            </span>
-          ` : ''}
+          <span class="inline-flex items-center gap-1.5 text-xs bg-sky-50 text-sky-700 px-3 py-1 rounded-full font-medium self-start sm:self-auto border border-sky-100 shrink-0">
+            <i class="ph-bold ph-bed"></i> ${dayData.badge}
+          </span>
         </div>
       `;
 
@@ -254,47 +288,84 @@
       updateProgress();
     }
 
-    function renderCard(item, dayNum, dayDate) {
+    // 渲染單個行程卡片（含子項目卡片）
+    function renderCard(item, dayNum) {
       const isChecked = !!checkedItems[item.id];
-      const mapLink = item.location
-        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`
-        : null;
+      const mainMapLink = item.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}` : null;
+
+      // 渲染子項目卡片
+      let subItemsHTML = '';
+      if (item.subItems && item.subItems.length > 0) {
+        subItemsHTML = `
+          <div class="mt-3 space-y-2 border-t border-slate-100 pt-3">
+            ${item.subItems.map(sub => {
+              const subMapLink = sub.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(sub.location)}` : null;
+              const isPrimary = sub.tag.includes('順位 1') || sub.tag.includes('首選') || sub.tag.includes('步驟 1');
+              
+              return `
+                <div class="rounded-xl p-2.5 transition border ${isPrimary ? 'bg-amber-50/70 border-amber-200' : 'bg-slate-50 border-slate-200/80'}">
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-1.5 flex-wrap mb-1">
+                        ${sub.tag ? `
+                          <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md ${isPrimary ? 'bg-amber-500 text-white' : 'bg-slate-200 text-slate-700'}">
+                            ${sub.tag}
+                          </span>
+                        ` : ''}
+                        <span class="text-xs md:text-sm font-bold text-slate-800">${sub.name}</span>
+                      </div>
+                      ${sub.desc ? `<p class="text-xs text-slate-600 leading-relaxed whitespace-pre-line">${sub.desc}</p>` : ''}
+                    </div>
+                    ${subMapLink ? `
+                      <a href="${subMapLink}" target="_blank" rel="noopener noreferrer" title="導航至 ${sub.location}" class="shrink-0 p-1.5 text-slate-400 hover:text-sky-600 hover:bg-white rounded-lg transition shadow-xs">
+                        <i class="ph-bold ph-navigation-arrow text-base"></i>
+                      </a>
+                    ` : ''}
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
 
       return `
-        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:border-sky-200 transition mb-3 ${isChecked ? 'opacity-60 bg-slate-50' : ''}">
+        <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:border-sky-200 transition ${isChecked ? 'opacity-60 bg-slate-50' : ''}">
           <div class="flex items-start justify-between gap-3">
-            <button onclick="toggleCheck('${item.id}')" class="mt-0.5 text-xl transition transform active:scale-95 ${isChecked ? 'text-emerald-500' : 'text-slate-300 hover:text-slate-400'}">
+            <!-- 勾選框 -->
+            <button onclick="toggleCheck('${item.id}')" class="mt-0.5 text-xl transition transform active:scale-90 shrink-0 ${isChecked ? 'text-emerald-500' : 'text-slate-300 hover:text-slate-400'}">
               <i class="ph-fill ${isChecked ? 'ph-check-circle' : 'ph-circle'}"></i>
             </button>
 
+            <!-- 內容本體 -->
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 mb-1">
-                ${item.time ? `
-                  <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md flex items-center gap-1">
-                    <i class="ph ph-clock"></i> ${item.time}
-                  </span>
-                ` : ''}
-                ${item.tag ? `
-                  <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                    ${item.tag}
-                  </span>
-                ` : ''}
-                ${dayDate ? `<span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">Day ${dayNum} (${dayDate})</span>` : ''}
+                <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md flex items-center gap-1 border border-sky-100/50">
+                  <i class="ph ph-clock"></i> ${item.time}
+                </span>
+                <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                  ${item.tag}
+                </span>
               </div>
 
-              <h3 class="text-base font-bold text-slate-800 ${isChecked ? 'line-through text-slate-400' : ''}">
+              <h3 class="text-sm md:text-base font-bold text-slate-800 ${isChecked ? 'line-through text-slate-400' : ''}">
                 ${item.title}
               </h3>
+
               ${item.desc ? `
                 <p class="text-xs md:text-sm text-slate-600 mt-1 leading-relaxed whitespace-pre-line">
                   ${item.desc}
                 </p>
               ` : ''}
+
+              <!-- 候選子項目卡片清單 -->
+              ${subItemsHTML}
             </div>
 
-            ${mapLink ? `
-              <a href="${mapLink}" target="_blank" rel="noopener noreferrer" title="開啟 Google Maps 導航" class="shrink-0 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition">
-                <i class="ph-bold ph-navigation-arrow text-xl"></i>
+            <!-- 主地標導航按鈕 -->
+            ${mainMapLink ? `
+              <a href="${mainMapLink}" target="_blank" rel="noopener noreferrer" title="開啟 Google 地圖" class="shrink-0 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition">
+                <i class="ph-bold ph-navigation-arrow text-lg"></i>
               </a>
             ` : ''}
           </div>
@@ -305,12 +376,7 @@
     function switchTab(idx) {
       currentDayIdx = idx;
       document.getElementById('searchInput').value = '';
-      const tabs = document.querySelectorAll('.tab-btn');
-      tabs.forEach((tab, index) => {
-        tab.className = index === idx
-          ? "tab-btn active shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white text-sky-700 shadow-sm transition"
-          : "tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition";
-      });
+      renderTabs();
       render();
     }
 
@@ -339,12 +405,32 @@
       document.getElementById('progressText').innerText = `${completed} / ${total} 完成 (${percentage}%)`;
     }
 
+    // 搜尋即時監聽
     document.getElementById('searchInput').addEventListener('input', () => {
       render();
     });
 
-    // 啟動加載
-    loadItinerary();
+    // 載入行程 MD 檔案
+    async function init() {
+      try {
+        const res = await fetch('itinerary.md?v=' + Date.now());
+        if (!res.ok) throw new Error('無法載入 itinerary.md');
+        const md = await res.text();
+        tripData = parseMarkdown(md);
+        renderTabs();
+        render();
+      } catch (err) {
+        console.warn('遠端讀取失敗，載入備用狀態：', err);
+        document.getElementById('itineraryContainer').innerHTML = `
+          <div class="p-6 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900 text-sm leading-relaxed">
+            <p class="font-bold flex items-center gap-1.5"><i class="ph-fill ph-warning-circle text-lg"></i> 本地直接雙擊瀏覽器開啟限制提醒</p>
+            <p class="text-xs text-slate-600 mt-1">若您是在電腦本機端直接雙擊開啟 HTML，瀏覽器預設安全性設定（CORS）可能會阻擋讀取同目錄下的 <code>itinerary.md</code>。建議將檔案推送到 <strong>GitHub Pages</strong>，即可完全正常自動同步！</p>
+          </div>
+        `;
+      }
+    }
+
+    init();
   </script>
 </body>
 </html>
