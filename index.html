@@ -25,56 +25,42 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-16">
 
-  <!-- Header Banner -->
+  <!-- 頂部導航與標題 -->
   <header class="bg-gradient-to-r from-sky-600 to-teal-500 text-white shadow-md sticky top-0 z-40">
     <div class="max-w-4xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div>
         <div class="flex items-center gap-2">
           <i class="ph-bold ph-sun text-amber-300 text-2xl"></i>
-          <h1 class="text-xl md:text-2xl font-black tracking-wide">沖繩親子自駕・度假全紀錄</h1>
+          <h1 id="siteTitle" class="text-xl md:text-2xl font-black tracking-wide">沖繩自駕之旅</h1>
         </div>
-        <p class="text-xs text-sky-100 mt-1">2026/09/26（五）- 09/30（二）5天4夜行程表</p>
+        <p id="siteSubtitle" class="text-xs text-sky-100 mt-1">載入行程中...</p>
       </div>
 
-      <!-- 快速搜尋框 -->
+      <!-- 快速即時搜尋框 -->
       <div class="relative w-full md:w-64">
         <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
         <input
           id="searchInput"
           type="text"
-          placeholder="搜尋景點、餐廳、備註..."
+          placeholder="搜尋景點、美食、備註..."
           class="w-full pl-9 pr-3 py-1.5 text-sm text-slate-800 rounded-full bg-white/95 focus:outline-none focus:ring-2 focus:ring-amber-300 transition"
         />
       </div>
     </div>
 
-    <!-- Day Navigation Bar -->
-    <div class="max-w-4xl mx-auto px-4 mt-2 overflow-x-auto custom-scrollbar flex gap-2 pb-2">
-      <button onclick="switchTab(0)" class="tab-btn active shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white text-sky-700 shadow-sm transition">
-        Day 1 (9/26) 那霸
-      </button>
-      <button onclick="switchTab(1)" class="tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition">
-        Day 2 (9/27) 水族館/踏浪
-      </button>
-      <button onclick="switchTab(2)" class="tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition">
-        Day 3 (9/28) 漁港/動物園/美國村
-      </button>
-      <button onclick="switchTab(3)" class="tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition">
-        Day 4 (9/29) 落日沙灘/永旺燒肉
-      </button>
-      <button onclick="switchTab(4)" class="tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition">
-        Day 5 (9/30) 瀨長島/返台
-      </button>
-    </div>
+    <!-- 天數切換頁籤（由 JS 自動產生） -->
+    <div id="tabNav" class="max-w-4xl mx-auto px-4 mt-2 overflow-x-auto custom-scrollbar flex gap-2 pb-2"></div>
   </header>
 
-  <!-- 主內容區 -->
+  <!-- 主畫面 -->
   <main class="max-w-4xl mx-auto px-4 mt-6">
 
-    <!-- 行程整體進度條 -->
+    <!-- 進度統計條 -->
     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-6">
       <div class="flex items-center justify-between text-xs text-slate-500 font-bold mb-2">
-        <span class="flex items-center gap-1.5"><i class="ph-bold ph-check-circle text-emerald-500 text-base"></i> 行程進度追蹤</span>
+        <span class="flex items-center gap-1.5">
+          <i class="ph-bold ph-check-circle text-emerald-500 text-base"></i> 行程打卡進度
+        </span>
         <span id="progressText">0 / 0 完成</span>
       </div>
       <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
@@ -82,389 +68,146 @@
       </div>
     </div>
 
-    <!-- 行程天數內容容器 -->
-    <div id="itineraryContainer" class="space-y-4"></div>
+    <!-- 行程卡片容器 -->
+    <div id="itineraryContainer" class="space-y-4">
+      <div class="p-8 text-center text-slate-400 bg-white rounded-2xl shadow-sm border border-slate-100">
+        正在解析 itinerary.md 檔案...
+      </div>
+    </div>
 
-    <!-- 必備貼心提示區 -->
+    <!-- 隨身提醒卡片 -->
     <div class="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm text-amber-900 space-y-2">
       <div class="font-bold flex items-center gap-2 text-amber-800">
-        <i class="ph-fill ph-warning-circle text-lg"></i> 自駕出遊隨身備忘提醒：
+        <i class="ph-fill ph-warning-circle text-lg"></i> 自駕出遊重要提醒：
       </div>
       <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700">
-        <li><strong>取車必備證件</strong>：台灣駕照「正本」＋ 日文譯本 ＋ 護照（缺一不可）。</li>
-        <li><strong>孩童乘車規範</strong>：未滿 6 歲孩童在日本法規上必須乘坐兒童安全座椅，取車時請務必確認固定狀況。</li>
-        <li><strong>還車油料提醒</strong>：Day 5 還車前需於周邊指定加油站「レギュラー（紅色 Regular 油槍）」加滿，並保留加油收據發票供門市人員確認。[...]
+        <li><strong>租車必帶</strong>：台灣駕照正本 ＋ 日文翻譯本 ＋ 護照。</li>
+        <li><strong>兒童座椅</strong>：日本規定 6 歲以下乘車必須配置安全座椅。</li>
+        <li><strong>還車加滿油</strong>：請使用「Regular（紅色油槍）」加滿，並保留加油發票供查驗。</li>
       </ul>
     </div>
   </main>
 
   <script>
-    // 完整的行程資料庫
-    const tripData = [
-      {
-        day: 1,
-        date: "9/26（五）",
-        title: "初抵沖繩・那霸市區迎賓燒肉夜",
-        badge: "住宿：那霸市區飯店",
-        items: [
-          {
-            id: "d1-1",
-            time: "14:55 - 17:20",
-            title: "飛行時間（TPE ➔ OKA）",
-            desc: "桃園機場第一航廈出發，搭機前往那霸機場。",
-            tag: "交通",
-            location: "桃園國際機場"
-          },
-          {
-            id: "d1-2",
-            time: "17:20 - 18:20",
-            title: "出關與搭乘單軌移動",
-            desc: "辦理入境審查與提領行李，搭乘沖繩單軌電車（Yui-Rail）前往那霸市區飯店。",
-            tag: "交通",
-            location: "那霸機場單軌電車站"
-          },
-          {
-            id: "d1-3",
-            time: "18:20 - 19:00",
-            title: "飯店 Check-in",
-            desc: "辦理入住手續、放置大件行李，梳洗整裝準備吃晚餐。",
-            tag: "住宿",
-            location: "那霸市區"
-          },
-          {
-            id: "d1-4",
-            time: "19:00 - 20:30",
-            title: "晚餐：飯店旁和牛燒肉（已訂位）",
-            desc: "步行至預約好的燒肉餐廳，享用抵達沖繩的第一頓和牛美味大餐。",
-            tag: "美食",
-            location: "那霸市 燒肉"
-          },
-          {
-            id: "d1-5",
-            time: "20:30 - 21:30",
-            title: "國際通初探",
-            desc: "飯後散步國際通街區，買支 Blue Seal 冰淇淋，超商採買飲品點心回房休息。",
-            tag: "逛街",
-            location: "國際通"
-          }
-        ]
-      },
-      {
-        day: 2,
-        date: "9/27（六）",
-        title: "晨間泳池・光影水族館・海灘踏浪・國際通血拚",
-        badge: "住宿：那霸市區飯店",
-        items: [
-          {
-            id: "d2-1",
-            time: "08:30 - 09:30",
-            title: "飯店早餐時光",
-            desc: "享用豐富早餐補充體力，替小朋友換上泳衣。",
-            tag: "美食",
-            location: ""
-          },
-          {
-            id: "d2-2",
-            time: "09:30 - 10:45",
-            title: "晨間飯店泳池戲水",
-            desc: "在飯店泳池悠閒玩水、晨間放電與消暑。",
-            tag: "親子活動",
-            location: ""
-          },
-          {
-            id: "d2-3",
-            time: "10:45 - 11:15",
-            title: "更衣整裝備齊證件",
-            desc: "回房沖洗，確認備齊：台灣駕照、日文譯本與全家人護照。",
-            tag: "準備",
-            location: ""
-          },
-          {
-            id: "d2-4",
-            time: "11:15 - 12:15",
-            title: "11:30 準時租車取車",
-            desc: "辦理手續，確認汽油種類、安裝兒童安全座椅並進行全車錄影驗車。",
-            tag: "交通",
-            location: "那霸 租車營業所"
-          },
-          {
-            id: "d2-5",
-            time: "12:15 - 12:45",
-            title: "南下前往豐見城 iias",
-            desc: "開車前往 iias 沖繩豐崎（車程約 25 分鐘，商場提供免費停車）。",
-            tag: "交通",
-            location: "iias 沖繩豐崎"
-          },
-          {
-            id: "d2-6",
-            time: "12:45 - 13:45",
-            title: "中餐：iias 內吃拉麵",
-            desc: "商場內拉麵店用餐，吹冷氣稍作歇息。",
-            tag: "美食",
-            location: "iias 沖繩豐崎"
-          },
-          {
-            id: "d2-7",
-            time: "13:45 - 15:45",
-            title: "遊樂：DMM Kariyushi 水族館",
-            desc: "沉浸式光影步道、透明玻璃空中步道、海星海參觸摸池，近看水獺、樹懶與企鵝。",
-            tag: "重點景點",
-            location: "DMM Kariyushi 水族館"
-          },
-          {
-            id: "d2-8",
-            time: "15:45 - 16:45",
-            title: "海邊走走：豐崎美麗 SUN 海灘",
-            desc: "經商場 2 樓天橋步行 5 分鐘抵達沙灘踩水玩沙，近距離仰頭看客機低空掠過降落機場。",
-            tag: "重點景點",
-            location: "豐崎美麗SUN海灘"
-          },
-          {
-            id: "d2-9",
-            time: "16:45 - 17:30",
-            title: "返程回那霸市區",
-            desc: "沙灘簡易洗腳沖沙後上車，開車回那霸飯店放車。",
-            tag: "交通",
-            location: ""
-          },
-          {
-            id: "d2-10",
-            time: "17:45 - 19:30",
-            title: "國際通採買 ＋ 晚餐",
-            desc: "徒步��往國際通與牧志市場周邊；晚餐推薦沖繩阿古豬炸豬排或頂級和牛壽喜燒。",
-            tag: "美食/逛街",
-            location: "第一牧志公設市場"
-          },
-          {
-            id: "d2-11",
-            time: "19:30 - 21:00",
-            title: "MEGA 唐吉訶德採買",
-            desc: "逛唐吉訶德採買零食、日本藥妝與特色土產，散步回房休息。",
-            tag: "逛街",
-            location: "MEGA唐吉訶德 那霸國際通店"
-          }
-        ]
-      },
-      {
-        day: 3,
-        date: "9/28（日）",
-        title: "海鮮早午餐・天久血拚・沖繩兒童王國・美國村夕陽",
-        badge: "住宿：美國村周邊飯店",
-        items: [
-          {
-            id: "d3-1",
-            time: "10:00",
-            title: "退房出發",
-            desc: "辦理退房手續，全家大件行李全數上車後出發。",
-            tag: "交通",
-            location: ""
-          },
-          {
-            id: "d3-2",
-            time: "10:15 - 11:30",
-            title: "早午餐：泊港漁市場（泊いゆまち）",
-            desc: "必嚐現剖海膽、生魚片盒、炙燒起司明太子大蝦、生蠔；小朋友可享用炸魚排、現烤鰻魚串與鮮魚味噌湯。",
-            tag: "美食",
-            location: "泊港漁市場"
-          },
-          {
-            id: "d3-3",
-            time: "11:45 - 13:00",
-            title: "購物：天久樂市商圈集中採買",
-            desc: "車程 5 分鐘。逛超大棟 Sports Depo（運動服飾、跑鞋、露營配備）以及同區 Uniqlo、無印良品（車停同處免移車）。",
-            tag: "購物",
-            location: "天久樂市"
-          },
-          {
-            id: "d3-4",
-            time: "13:00 - 14:15",
-            title: "中餐 ＋ 買玩具：Coop Apple Town",
-            desc: "步行到對街商場。中餐享用「黑船鰻魚飯」；隨後到 1 樓玩具反斗城 Toys\"R\"Us 讓孩子挑選心愛玩具。",
-            tag: "美食/購物",
-            location: "Apple Town 那霸"
-          },
-          {
-            id: "d3-5",
-            time: "14:30 - 15:15",
-            title: "北上前往沖繩市",
-            desc: "開車前往沖繩市（車程約 30～35 分鐘）。",
-            tag: "交通",
-            location: ""
-          },
-          {
-            id: "d3-6",
-            time: "15:15 - 17:30",
-            title: "遊樂：沖繩兒童王國（Zoo & Museum）",
-            desc: "戶外區近距離餵食長頸鹿、摸天竺鼠與小雞；室內 Wonder Museum 科學探索館體驗多項互動裝置。",
-            tag: "重點景點",
-            location: "沖繩兒童王國"
-          },
-          {
-            id: "d3-7",
-            time: "17:30 - 18:00",
-            title: "前往北谷美國村 Check-in",
-            desc: "開車前往北谷飯店（約 15 分鐘），辦理入住、放置行李卸車。",
-            tag: "住宿",
-            location: "美國村"
-          },
-          {
-            id: "d3-8",
-            time: "18:00 - 19:30",
-            title: "海岸夕陽漫步 ＋ 晚餐",
-            desc: "漫步海岸步道欣賞夕陽。晚餐：Gourmet 迴轉壽司（建議先抽號碼牌）、文字燒或日式炸豬排。",
-            tag: "美食",
-            location: "美濱美國村"
-          },
-          {
-            id: "d3-9",
-            time: "19:30 - 21:00",
-            title: "美國村夜景漫遊",
-            desc: "走訪 Depot Island 異國造景街區散步拍照，享受美式熱鬧度假氛圍。",
-            tag: "逛街",
-            location: "Depot Island"
-          }
-        ]
-      },
-      {
-        day: 4,
-        date: "9/29（一）",
-        title: "晨間北谷玩水・永旺夢樂城寶可夢・海景精緻燒肉",
-        badge: "住宿：美國村周邊飯店",
-        items: [
-          {
-            id: "d4-1",
-            time: "08:00 - 08:30",
-            title: "早餐：沖繩豬肉蛋飯糰",
-            desc: "外帶剛做好的 Pokutam 豬肉蛋飯糰，換好泳裝準備玩水。",
-            tag: "美食",
-            location: "Pokutam 美國村"
-          },
-          {
-            id: "d4-2",
-            time: "08:30 - 10:30",
-            title: "玩水放電：北谷落日海灘（Sunset Beach）",
-            desc: "清晨人潮少、海水乾淨舒適，讓孩子在海邊踩水、游泳與堆沙堡。",
-            tag: "重點景點",
-            location: "日落海灘"
-          },
-          {
-            id: "d4-3",
-            time: "10:30 - 11:30",
-            title: "回飯店沖洗更衣",
-            desc: "步行返回飯店舒適沖澡、吹整頭髮，換上乾爽休閒外出服。",
-            tag: "休閒",
-            location: ""
-          },
-          {
-            id: "d4-4",
-            time: "11:30 - 12:00",
-            title: "前往永旺夢樂城沖繩來客夢",
-            desc: "開車前往北中城村永旺夢樂城（車程約 15～20 分鐘）。",
-            tag: "交通",
-            location: "AEON MALL Okinawa Rycom"
-          },
-          {
-            id: "d4-5",
-            time: "12:00 - 16:30",
-            title: "中餐 ＋ 寶可夢中心 ＋ 逛街購物",
-            desc: "午餐推薦：3F 仙台利久炭燒牛舌 或 4F JUMBO STEAK HAN'S 大牛排。\n必逛行程：1F 沖繩限定寶可夢中心、大水族箱、童裝、Bic Camera 與伴手禮[...]",
-            tag: "重點景點/美食",
-            location: "Pokemon Center Okinawa"
-          },
-          {
-            id: "d4-6",
-            time: "16:30 - 17:00",
-            title: "返回美國村飯店放置戰利品",
-            desc: "滿載戰利品返回飯店放置，稍作休憩整備。",
-            tag: "休閒",
-            location: "美國村"
-          },
-          {
-            id: "d4-7",
-            time: "17:00 - 18:30",
-            title: "美國村海濱夕陽散步",
-            desc: "沿著海濱步道慢活散步，欣賞北谷聞名的橘紅晚霞落日。",
-            tag: "休閒",
-            location: "美國村海濱步道"
-          },
-          {
-            id: "d4-8",
-            time: "18:30 - 20:30",
-            title: "晚餐：美國村頂級燒肉盛宴",
-            desc: "享受頂級和牛「琉球之牛（美國村店）」或超人氣「博多燒肉 天神」。",
-            tag: "美食",
-            location: "琉球之牛 美國村"
-          },
-          {
-            id: "d4-9",
-            time: "20:30 起",
-            title: "Depot Island 夜景散策 ＋ 回房打包",
-            desc: "散步消化、感受夜間霓虹造景，回飯店整理與打包所有行李箱準備隔天回台。",
-            tag: "休閒",
-            location: ""
-          }
-        ]
-      },
-      {
-        day: 5,
-        date: "9/30（二）",
-        title: "瀨長島觀機・機場午餐採買・順利返台",
-        badge: "住宿：溫暖的家",
-        items: [
-          {
-            id: "d5-1",
-            time: "08:45 - 09:15",
-            title: "退房南下前往瀨長島",
-            desc: "辦理退房，沿 58 號公路南下開往那霸空港方向（車程約 40 分鐘）。",
-            tag: "交通",
-            location: ""
-          },
-          {
-            id: "d5-2",
-            time: "09:30 - 10:30",
-            title: "瀨長島 Umikaji Terrace 觀機",
-            desc: "漫步純白希臘風格階梯商場，吹海風喝飲料，近距離體驗客機低空劃過頭頂降落的震撼視覺。",
-            tag: "重點景點",
-            location: "瀨長島 Umikaji Terrace"
-          },
-          {
-            id: "d5-3",
-            time: "10:30 - 11:15",
-            title: "加油加滿 ＋ 營業所還車 ＋ 機場接駁",
-            desc: "於周邊指定加油站加滿油（記得索取加油明細），門市點交還車後搭乘免費接駁車前往那霸機場。",
-            tag: "交通",
-            location: "那霸機場 租車還車處"
-          },
-          {
-            id: "d5-4",
-            time: "11:15 - 13:00",
-            title: "那霸機場：報到 ＋ 中餐 ＋ 免稅採買",
-            desc: "辦理國際線登機與托運行李。午餐於美食街品嚐沖繩麵或 A&W 漢堡；採買紅芋塔、雪鹽等伴手禮。",
-            tag: "美食/購物",
-            location: "那霸機場 國際線航廈"
-          },
-          {
-            id: "d5-5",
-            time: "13:25 - 14:00",
-            title: "平安返抵台灣（OKA ➔ TPE）",
-            desc: "搭乘 13:25 班機返台，於 14:00 順利抵達桃園機場，結束愉快沖繩之旅！",
-            tag: "交通",
-            location: "桃園國際機場"
-          }
-        ]
-      }
-    ];
-
+    let tripData = [];
     let currentDayIdx = 0;
     let checkedItems = JSON.parse(localStorage.getItem('okinawa_trip_checked') || '{}');
 
-    // 渲染函式
+    // 解析 itinerary.md 檔案結構
+    function parseMarkdown(mdText) {
+      const lines = mdText.split('\n');
+      let title = "沖繩 5D4N 親子自駕慢活之旅";
+      let subtitle = "2026/09/26（五）- 09/30（二）";
+      const days = [];
+      let currentDay = null;
+      let currentItem = null;
+      let itemIdCount = 1;
+
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+
+        if (line.startsWith('# ')) {
+          title = line.replace('# ', '').trim();
+        } else if (line.startsWith('> 日期：')) {
+          subtitle = line.replace('> 日期：', '').trim();
+        } else if (line.startsWith('## Day')) {
+          const dayMatch = line.match(/^##\s*Day\s*(\d+)[:：]\s*(.*?)\s+(.*)$/);
+          if (dayMatch) {
+            currentDay = {
+              day: parseInt(dayMatch[1], 10),
+              date: dayMatch[2],
+              title: dayMatch[3],
+              badge: "住宿：未定",
+              items: []
+            };
+          } else {
+            currentDay = {
+              day: days.length + 1,
+              date: "",
+              title: line.replace('## ', ''),
+              badge: "",
+              items: []
+            };
+          }
+          days.push(currentDay);
+          currentItem = null;
+        } else if (line.startsWith('* 住宿：') && currentDay) {
+          currentDay.badge = line.replace('* ', '');
+        } else if (line.startsWith('### ') && currentDay) {
+          const itemMatch = line.match(/^###\s*(.*?)【(.*?)】/);
+          currentItem = {
+            id: `item-${itemIdCount++}`,
+            time: itemMatch ? itemMatch[1].trim() : "",
+            title: itemMatch ? itemMatch[2].trim() : line.replace('### ', ''),
+            tag: "行程",
+            location: "",
+            desc: ""
+          };
+          currentDay.items.push(currentItem);
+        } else if (currentItem) {
+          if (line.startsWith('* 分類：')) {
+            currentItem.tag = line.replace('* 分類：', '').trim();
+          } else if (line.startsWith('* 地點：')) {
+            currentItem.location = line.replace('* 地點：', '').trim();
+          } else if (line.startsWith('* 說明：')) {
+            currentItem.desc = line.replace('* 說明：', '').trim();
+          } else if (line.startsWith('* ')) {
+            currentItem.desc += (currentItem.desc ? '\n' : '') + line.replace('* ', '').trim();
+          }
+        }
+      }
+
+      return { title, subtitle, days };
+    }
+
+    // 取得 itinerary.md 內容並初始化
+    async function loadItinerary() {
+      try {
+        // 使用 timestamp 參數防止快取，確保在 GitHub Pages 上更新 md 後能即時顯示
+        const res = await fetch('itinerary.md?t=' + new Date().getTime());
+        if (!res.ok) throw new Error("找不到 itinerary.md 檔案");
+        const mdText = await res.text();
+        const parsed = parseMarkdown(mdText);
+
+        document.getElementById('siteTitle').innerText = parsed.title;
+        document.getElementById('siteSubtitle').innerText = parsed.subtitle;
+        tripData = parsed.days;
+
+        buildTabs();
+        render();
+      } catch (err) {
+        console.error(err);
+        document.getElementById('itineraryContainer').innerHTML = `
+          <div class="p-6 bg-red-50 border border-red-200 rounded-2xl text-red-700 text-sm">
+            <strong>讀取 itinerary.md 失敗：</strong><br>
+            請確認 <code>itinerary.md</code> 與 <code>index.html</code> 位於同一個資料夾，且已推送到 GitHub 上。
+          </div>
+        `;
+      }
+    }
+
+    // 建立天數頁籤
+    function buildTabs() {
+      const tabNav = document.getElementById('tabNav');
+      tabNav.innerHTML = '';
+      tripData.forEach((d, idx) => {
+        const btn = document.createElement('button');
+        btn.className = idx === 0 
+          ? "tab-btn active shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white text-sky-700 shadow-sm transition"
+          : "tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition";
+        btn.innerText = `Day ${d.day} (${d.date.split('（')[0]})`;
+        btn.onclick = () => switchTab(idx);
+        tabNav.appendChild(btn);
+      });
+    }
+
+    // 渲染卡片與內容
     function render() {
       const container = document.getElementById('itineraryContainer');
-      const dayData = tripData[currentDayIdx];
       const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
 
-      // 如果有搜尋字串，跨所有天數篩選
+      if (!tripData || tripData.length === 0) return;
+
       if (searchTerm) {
         let resultsHTML = `<div class="text-xs font-bold text-slate-500 mb-3">搜尋「${searchTerm}」的結果：</div>`;
         let foundAny = false;
@@ -482,22 +225,24 @@
         });
 
         if (!foundAny) {
-          resultsHTML += `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl">沒有找到相關行程項目</div>`;
+          resultsHTML += `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl shadow-sm border border-slate-100">沒有找到符合的行程項目</div>`;
         }
         container.innerHTML = resultsHTML;
         return;
       }
 
-      // 正常按 Day 渲染
+      const dayData = tripData[currentDayIdx];
       let html = `
         <div class="flex flex-col sm:flex-row sm:items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-slate-100 gap-2 mb-4">
           <div>
             <div class="text-xs font-black text-sky-600 uppercase tracking-widest">Day ${dayData.day} ・ ${dayData.date}</div>
             <h2 class="text-lg md:text-xl font-black text-slate-800">${dayData.title}</h2>
           </div>
-          <span class="inline-flex items-center gap-1 text-xs bg-sky-50 text-sky-700 px-3 py-1 rounded-full font-medium self-start sm:self-auto">
-            <i class="ph-bold ph-bed"></i> ${dayData.badge}
-          </span>
+          ${dayData.badge ? `
+            <span class="inline-flex items-center gap-1 text-xs bg-sky-50 text-sky-700 px-3 py-1 rounded-full font-medium self-start sm:self-auto">
+              <i class="ph-bold ph-bed"></i> ${dayData.badge}
+            </span>
+          ` : ''}
         </div>
       `;
 
@@ -518,34 +263,37 @@
       return `
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:border-sky-200 transition mb-3 ${isChecked ? 'opacity-60 bg-slate-50' : ''}">
           <div class="flex items-start justify-between gap-3">
-            <!-- 勾選框 -->
             <button onclick="toggleCheck('${item.id}')" class="mt-0.5 text-xl transition transform active:scale-95 ${isChecked ? 'text-emerald-500' : 'text-slate-300 hover:text-slate-400'}">
               <i class="ph-fill ${isChecked ? 'ph-check-circle' : 'ph-circle'}"></i>
             </button>
 
-            <!-- 內容本體 -->
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 mb-1">
-                <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md flex items-center gap-1">
-                  <i class="ph ph-clock"></i> ${item.time}
-                </span>
-                <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                  ${item.tag}
-                </span>
+                ${item.time ? `
+                  <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md flex items-center gap-1">
+                    <i class="ph ph-clock"></i> ${item.time}
+                  </span>
+                ` : ''}
+                ${item.tag ? `
+                  <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
+                    ${item.tag}
+                  </span>
+                ` : ''}
                 ${dayDate ? `<span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">Day ${dayNum} (${dayDate})</span>` : ''}
               </div>
 
               <h3 class="text-base font-bold text-slate-800 ${isChecked ? 'line-through text-slate-400' : ''}">
                 ${item.title}
               </h3>
-              <p class="text-xs md:text-sm text-slate-600 mt-1 leading-relaxed whitespace-pre-line">
-                ${item.desc}
-              </p>
+              ${item.desc ? `
+                <p class="text-xs md:text-sm text-slate-600 mt-1 leading-relaxed whitespace-pre-line">
+                  ${item.desc}
+                </p>
+              ` : ''}
             </div>
 
-            <!-- 地圖導航連結 -->
             ${mapLink ? `
-              <a href="${mapLink}" target="_blank" rel="noopener noreferrer" title="開啟 Google Maps" class="shrink-0 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition">
+              <a href="${mapLink}" target="_blank" rel="noopener noreferrer" title="開啟 Google Maps 導航" class="shrink-0 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition">
                 <i class="ph-bold ph-navigation-arrow text-xl"></i>
               </a>
             ` : ''}
@@ -559,11 +307,9 @@
       document.getElementById('searchInput').value = '';
       const tabs = document.querySelectorAll('.tab-btn');
       tabs.forEach((tab, index) => {
-        if (index === idx) {
-          tab.className = "tab-btn active shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white text-sky-700 shadow-sm transition";
-        } else {
-          tab.className = "tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition";
-        }
+        tab.className = index === idx
+          ? "tab-btn active shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white text-sky-700 shadow-sm transition"
+          : "tab-btn shrink-0 px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-white/20 hover:bg-white/30 text-white transition";
       });
       render();
     }
@@ -593,13 +339,12 @@
       document.getElementById('progressText').innerText = `${completed} / ${total} 完成 (${percentage}%)`;
     }
 
-    // 搜尋監聽
     document.getElementById('searchInput').addEventListener('input', () => {
       render();
     });
 
-    // 初始渲染
-    render();
+    // 啟動加載
+    loadItinerary();
   </script>
 </body>
 </html>
