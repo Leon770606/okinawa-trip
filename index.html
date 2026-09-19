@@ -8,7 +8,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Phosphor Icons CDN -->
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  <!-- Google Fonts: Noto Sans TC -->
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
     body {
@@ -16,7 +15,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     .custom-scrollbar::-webkit-scrollbar {
-      height: 5px;
+      height: 6px;
     }
     .custom-scrollbar::-webkit-scrollbar-thumb {
       background-color: #cbd5e1;
@@ -24,7 +23,6 @@
     }
   </style>
 </head>
-<<<<<<< HEAD
 <body class="bg-slate-50 text-slate-800 min-h-screen pb-16">
 
   <!-- Header Banner -->
@@ -61,91 +59,19 @@
 
     <!-- 行程整體進度條 -->
     <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 mb-5">
-=======
-<body class="bg-slate-50 text-slate-800 min-h-screen pb-20 selection:bg-sky-500 selection:text-white">
-
-  <header class="bg-gradient-to-r from-sky-600 via-sky-500 to-teal-500 text-white shadow-md sticky top-0 z-40">
-    <div class="max-w-4xl mx-auto px-4 py-3.5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-      <div class="flex items-center justify-between">
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-              <i class="ph-bold ph-sun text-amber-300 text-xl"></i>
-            </span>
-            <h1 id="siteTitle" class="text-lg md:text-xl font-black tracking-tight">沖繩 5D4N 親子自駕</h1>
-          </div>
-          <p id="siteSubtitle" class="text-xs text-sky-100 mt-0.5 font-medium">載入行程中...</p>
-        </div>
-
-        <!-- 重新載入 / 貼上 MD 按鈕 (本地除錯好物) -->
-        <button onclick="toggleMdModal()" title="手動檢視或貼上 itinerary.md" class="md:hidden p-2 text-white/80 hover:text-white bg-white/10 rounded-xl">
-          <i class="ph-bold ph-file-text text-lg"></i>
-        </button>
-      </div>
-
-      <!-- 搜尋與手動按鈕 -->
-      <div class="flex items-center gap-2">
-        <div class="relative flex-1 md:w-64">
-          <i class="ph ph-magnifying-glass absolute left-3 top-2.5 text-slate-400"></i>
-          <input
-            id="searchInput"
-            type="text"
-            placeholder="搜尋景點、牛排、豬排、玩具..."
-            class="w-full pl-9 pr-8 py-1.5 text-xs md:text-sm text-slate-800 rounded-full bg-white shadow-inner focus:outline-none focus:ring-2 focus:ring-amber-400 transition"
-          />
-          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-2.5 top-2 text-slate-400 hover:text-slate-600">
-            <i class="ph-bold ph-x text-xs"></i>
-          </button>
-        </div>
-
-        <button onclick="toggleMdModal()" title="手動設定 itinerary.md 內容" class="hidden md:flex items-center gap-1 text-xs px-3 py-1.5 bg-white/15 hover:bg-white/25 rounded-full font-medium transition backdrop-blur-sm">
-          <i class="ph-bold ph-file-text"></i>
-          <span>更新行程</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- 天數切換 Tab 標籤 -->
-    <div class="max-w-4xl mx-auto px-4 mt-1 overflow-x-auto custom-scrollbar flex gap-2 pb-2" id="tabNav">
-      <!-- 由 JS 動態生成按鈕 -->
-    </div>
-  </header>
-
-  <main class="max-w-4xl mx-auto px-4 mt-5">
-
-    <!-- 行程打卡進度條 -->
-    <div class="bg-white rounded-2xl p-3.5 md:p-4 shadow-sm border border-slate-100 mb-5">
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
       <div class="flex items-center justify-between text-xs text-slate-500 font-bold mb-2">
-        <span class="flex items-center gap-1.5 text-slate-700">
-          <i class="ph-fill ph-check-circle text-emerald-500 text-base"></i>
-          <span>打卡進度</span>
+        <span class="flex items-center gap-1.5">
+          <i class="ph-bold ph-check-circle text-emerald-500 text-base"></i> 行程打卡進度
         </span>
-<<<<<<< HEAD
         <span id="progressText">0 / 0 完成 (0%)</span>
-=======
-        <span id="progressText" class="font-mono text-sky-600">0 / 0 (0%)</span>
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
       </div>
-      <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
-        <div id="progressBar" class="bg-gradient-to-r from-teal-400 to-sky-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+      <div class="w-full bg-slate-100 rounded-full h-2.5 overflow-hidden">
+        <div id="progressBar" class="bg-gradient-to-r from-teal-400 to-sky-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
       </div>
     </div>
 
-    <!-- 當日概覽卡片 -->
-    <div id="daySummaryCard" class="hidden bg-white p-4 rounded-2xl shadow-sm border border-slate-100 mb-4 transition">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-        <div>
-          <div id="dayBadge" class="text-xs font-black text-sky-600 uppercase tracking-wider">Day 1</div>
-          <h2 id="dayHeading" class="text-base md:text-lg font-black text-slate-800 mt-0.5">主題載入中</h2>
-        </div>
-        <div id="hotelBadgeContainer"></div>
-      </div>
-    </div>
-
-    <!-- 行程項目列表容器 -->
+    <!-- 行程卡片容器 -->
     <div id="itineraryContainer" class="space-y-4">
-<<<<<<< HEAD
       <div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">
         <i class="ph ph-spinner animate-spin text-2xl text-sky-500 mb-2"></i>
         <p class="text-sm">正在載入行程資料...</p>
@@ -162,346 +88,14 @@
         <li><strong>兒童安全座椅</strong>：未滿 6 歲孩童在日本法規上必須乘坐兒童安全座椅，取車確認安裝穩固。</li>
         <li><strong>還車油料要求</strong>：Day 5 還車前需於營業所指定加油站「レギュラー（紅色 Regular 油槍）」加滿，並保留加油發票供門市確認。</li>
       </ul>
-=======
-      <div class="p-8 text-center text-slate-400 bg-white rounded-2xl shadow-sm border border-slate-100">
-        <div class="inline-block animate-spin text-2xl text-sky-500 mb-2">
-          <i class="ph ph-spinner-gap"></i>
-        </div>
-        <p class="text-sm">正在載入行程表...</p>
-      </div>
-    </div>
-
-    <div class="mt-8 bg-gradient-to-br from-amber-50 to-orange-50/50 border border-amber-200/80 rounded-2xl p-4 text-xs md:text-sm text-slate-700 shadow-sm">
-      <div class="font-bold flex items-center gap-2 text-amber-900 mb-2">
-        <i class="ph-fill ph-shield-check text-lg text-amber-600"></i>
-        <span>自駕出遊即時備忘清單</span>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
-        <div class="bg-white/80 p-2.5 rounded-xl border border-amber-100 shadow-2xs">
-          <p class="font-bold text-slate-800 flex items-center gap-1 mb-0.5">
-            <i class="ph-bold ph-identification-card text-sky-600"></i> 證件三寶
-          </p>
-          <p class="text-slate-600">台灣駕照正本 ＋ 日文翻譯本 ＋ 護照，取車缺一不可！</p>
-        </div>
-        <div class="bg-white/80 p-2.5 rounded-xl border border-amber-100 shadow-2xs">
-          <p class="font-bold text-slate-800 flex items-center gap-1 mb-0.5">
-            <i class="ph-bold ph-baby text-emerald-600"></i> 兒童安全座椅
-          </p>
-          <p class="text-slate-600">未滿 6 歲嚴格強制乘坐。取車時請確認扣環牢固。</p>
-        </div>
-        <div class="bg-white/80 p-2.5 rounded-xl border border-amber-100 shadow-2xs">
-          <p class="font-bold text-slate-800 flex items-center gap-1 mb-0.5">
-            <i class="ph-bold ph-gas-pump text-amber-600"></i> 還車加滿油
-          </p>
-          <p class="text-slate-600">指定「紅色 Regular」加滿，保留收據供門市查驗。</p>
-        </div>
-      </div>
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
     </div>
   </main>
 
-  <div id="mdModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
-      <div class="px-5 py-3.5 bg-slate-100 border-b border-slate-200 flex items-center justify-between">
-        <div class="flex items-center gap-2 text-slate-800 font-bold text-sm">
-          <i class="ph-bold ph-code text-sky-600"></i>
-          <span>手動更新或自訂 itinerary.md</span>
-        </div>
-        <button onclick="toggleMdModal()" class="text-slate-400 hover:text-slate-700 p-1">
-          <i class="ph-bold ph-x text-lg"></i>
-        </button>
-      </div>
-      <div class="p-4 flex-1 overflow-y-auto space-y-2">
-        <p class="text-xs text-slate-500">
-          正常情況下，只要把 <code>itinerary.md</code> 上傳到 GitHub 與本 HTML 同一層即可自動讀取。若在本地預覽或無法連線時，可直接把 Markdown 貼在下方立即載入：
-        </p>
-        <textarea id="manualMdInput" class="w-full h-64 p-3 text-xs font-mono bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-sky-500 leading-relaxed"></textarea>
-      </div>
-      <div class="px-5 py-3 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
-        <button onclick="toggleMdModal()" class="px-3.5 py-1.5 text-xs text-slate-600 hover:bg-slate-200 rounded-xl transition font-medium">取消</button>
-        <button onclick="applyManualMd()" class="px-4 py-1.5 text-xs bg-sky-600 hover:bg-sky-700 text-white rounded-xl transition font-bold shadow-sm">立即套用</button>
-      </div>
-    </div>
-  </div>
-
   <script>
-    // 預設備份 Markdown 資料（確保本機直接雙擊 file:// 打開時亦能順利渲染）
-    const fallbackMarkdown = `# 沖繩 5D4N 親子自駕慢活之旅
-
-> 日期：2026/09/26（六）- 09/30（三）
-
----
-
-## Day 1：9/26（六）初抵沖繩・預約和牛燒肉盛宴
-* 住宿：那霸市區飯店
-
-### 14:55 - 17:20【飛行時間（TPE ➔ OKA）】
-* 分類：交通
-* 地點：桃園國際機場
-* 說明：桃園機場（TPE）搭機前往那霸機場（OKA）。
-
-### 17:20 - 18:20【出關與單軌移動】
-* 分類：交通
-* 地點：那霸機場單軌電車站
-* 說明：辦理入境手續、提領行李，搭乘單軌電車（Yui-Rail）前往那霸市區飯店。
-
-### 18:20 - 19:10【飯店 Check-in ＆ 稍作整裝】
-* 分類：住宿
-* 地點：那霸市區
-* 說明：辦理入住、放置大件行李，洗手換鞋，準備出發用餐。
-
-### 19:10 - 19:30【步行前往餐廳】
-* 分類：休閒
-* 地點：那霸市 久茂地
-* 說明：漫步前往國際通久茂地/牧志巷內的焼肉にく久（Niku久）。
-
-### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】
-* 分類：美食
-* 地點：焼肉にく久 那霸
-* 說明：享用預約好的黑毛和牛燒肉盛宴。
-
-### 21:00 - 21:40【國際通夜間散步】
-* 分類：逛街
-* 地點：國際通
-* 說明：吃支 Blue Seal 冰淇淋，超商採買飲品小點後回飯店休息。
-
----
-
-## Day 2：9/27（日）晨間泳池・DMM水族館・Little Universe・海灘看飛機・國際通名店晚餐
-* 住宿：那霸市區飯店
-
-### 08:30 - 09:15【早餐：便利商店挖寶】
-* 分類：美食
-* 地點：那霸市區
-* 說明：步行至飯店旁 Lawson / FamilyMart 買早餐（沖繩飯糰、炸雞塊、三明治、香蕉牛奶），回房輕鬆吃。
-
-### 09:15 - 10:45【晨間飯店泳池玩樂】
-* 分類：親子活動
-* 地點：那霸飯店泳池
-* 說明：媽媽與小朋友在飯店泳池戲水放電。
-
-### 10:45 - 11:30【分頭行動：老爸取車 ＆ 媽媽帶小孩回房整裝】
-* 分類：交通/準備
-* 地點：那霸 租車營業所
-* 說明：老爸：10:45 出發前往租車門市，11:30 準時辦理取車手續（檢查車況、安裝兩張安全座椅）。
-媽媽與小孩：10:45 離開泳池回房沖洗，換穿外出便服並收拾隨身背包。
-
-### 12:00 - 12:15【飯店門口接應 ＆ 出發】
-* 分類：交通
-* 地點：那霸市區
-* 說明：爸爸開車回飯店門口接全家人與隨身背包上車，南下前往豐見城（車程約 25 分鐘，iias 停車場免費）。
-
-### 12:45 - 13:45【中餐：iias 沖繩豐崎 1F（候選名單依序前往）】
-* 分類：美食
-* 地點：iias 沖繩豐崎
-* 說明：
-順位 1（首選推薦）：Taco Rice Cafe Kijimuna（1F，必吃招牌「歐姆蛋墨西哥肉醬飯」）。
-順位 2（快餐備案）：A&W 漢堡（1F，出餐快，必喝招牌麥根沙士配圈圈薯條）。
-順位 3（拉麵備案）：博多一幸社 / 美食街拉麵（吹冷氣簡單吃）。
-
-### 13:45 - 15:15【遊樂 1：DMM Kariyushi 水族館（iias 2F）】
-* 分類：重點景點
-* 地點：DMM Kariyushi 水族館
-* 說明：💡 提醒：尚未購票，可於前一天在 Klook 或 KKday 線上預訂（約 9 折優惠），掃 QR code 快速入場。
-體驗數位光影步道、透明玻璃空中步道看鯊魚游過、觸摸池摸海星，看樹懶、水獺與企鵝。
-
-### 15:15 - 15:50【遊樂 2：Little Universe OKINAWA（iias 3F）】
-* 分類：重點景點
-* 地點：Little Universe OKINAWA
-* 說明：💡 提醒：尚未購票，Klook / KKday 線上購票比現場優惠。
-玩約 30～40 分鐘的迷你微縮世界，欣賞 1:80 精緻模型、動態迷你琉球街景與互動光影秀。
-
-### 16:00 - 16:45【海邊走走：豐崎美麗SUN海灘】
-* 分類：重點景點
-* 地點：豐崎美麗SUN海灘
-* 說明：經商場 2 樓天橋步行 5 分鐘抵達沙灘。孩子踩水踏浪、沙灘玩沙，抬頭仰望每幾分鐘就有一架客機低空掠過降落機場。
-
-### 16:45 - 17:30【返程回那霸市區放車】
-* 分類：交通
-* 地點：那霸市區
-* 說明：在海灘簡易洗腳沖沙後上車，開車返回那霸飯店停車場放車（避開下班塞車潮）。
-
-### 17:45 - 19:30【晚餐：國際通周邊名店（候選排序前往）】
-* 分類：美食
-* 地點：島豚家 久茂地店
-* 說明：
-順位 1（炸豬排首選）：Shimabutaya Tonkatsu Dining（島豚家 久茂地店，低溫熟成厚切阿古豬，建議 17:30 提早候位）。
-順位 2（炸豬排老字號）：Tonton Jacky Pork（豚豚傑奇，厚實平價人氣老店，17:00 開門）。
-順位 3（石垣牛壽喜燒）：石垣牛専門店 肉匠将（高檔石垣牛壽喜燒）。
-
-### 19:30 - 21:00【國際通採買消消化】
-* 分類：逛街
-* 地點：MEGA唐吉訶德 那霸國際通店
-* 說明：逛平和通、第一牧志公設市場周邊街區與 MEGA 唐吉訶德，買齊藥妝伴手禮，散步回飯店休息。
-
----
-
-## Day 3：9/28（一）泊港海鮮早午餐・天久買玩具・兒童王國暢玩・美國村夕陽
-* 住宿：美國村周邊飯店
-
-### 09:00【退房出發（提早一小時出發）】
-* 分類：交通
-* 地點：泊港漁市場
-* 說明：那霸飯店辦理退房，行李全數上車，開車前往泊港海鮮市場（車程約 10 分鐘，備有停車場）。
-
-### 09:15 - 10:30【早餐/早午餐：泊港漁市場指定推薦攤位】
-* 分類：美食
-* 地點：泊港漁市場
-* 說明：
-推薦 1（海鮮首選）：中真水產（樣式多、中文溝通 OK；必吃現剖海膽、大生蠔、生魚片盒、炙燒起司明太子大蝦，提供免費炙燒服務）。
-推薦 2（平價壽司）：まぐろ大吉（鮪魚大吉，平價大份量握壽司專賣）。
-推薦 3（炸物天婦羅）：沖繩海鮮問屋（專賣熱食天婦羅、炸魚排與海鮮炸串，適合小朋友）。
-
-### 10:45 - 12:00【天久商圈集中採買】
-* 分類：購物
-* 地點：天久樂市
-* 說明：開車約 5～8 分鐘抵達天久樂市（免移車）：逛兩層樓的 Sports Depo Ameku（跑鞋、運動童裝、露營裝備），以及同園區的 Uniqlo 路面店、無印良品。
-
-### 12:00 - 13:15【中餐 ＆ 買玩具：Apple Town】
-* 分類：美食/購物
-* 地點：Apple Town 那霸
-* 說明：步行過馬路至對街 Coop Apple Town。
-中餐：黑船鰻魚飯（玩具反斗城同棟，香烤鰻魚飯定食）。
-挑玩具：Toys"R"Us 那霸新都心店（1 樓挑選 Tomica、Plarail 軌道車、樂高或寶可夢玩具）。
-
-### 13:15 - 13:45【北上前往沖繩市】
-* 分類：交通
-* 地點：沖繩兒童王國
-* 說明：開車前往沖繩市（車程約 30～35 分鐘）。
-
-### 13:45 - 16:45【遊樂：Okinawa Zoo & Museum（提前於 14:00 前抵達）】
-* 分類：重點景點
-* 地點：沖繩兒童王國
-* 說明：💡 週一正常開園，避開週二休園日。
-戶外動物區：近距離餵食長頸鹿、大象，觸摸小天竺鼠與小雞。
-Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關與聲光展具。
-
-### 16:45 - 17:15【前往美國村 Check-in】
-* 分類：住宿
-* 地點：美濱美國村
-* 說明：開車前往北谷美國村周邊飯店（車程約 15～20 分鐘），辦理入住放行李。
-
-### 17:15 - 18:30【Sunset Beach 海濱夕陽漫步】
-* 分類：休閒
-* 地點：日落海灘
-* 說明：漫步至海邊步道欣賞北谷金黃夕陽。
-
-### 18:30 - 20:30【晚餐：美國村精選（三選一）】
-* 分類：美食
-* 地點：美濱美國村
-* 說明：
-選項 1（迴轉壽司）：Gourmet 迴轉壽司市場 美濱店（散步時可先抽號碼牌）。
-選項 2（特色鐵板）：日式文字燒 / 大阪燒（親手煎烤樂趣）。
-選項 3（日式定食）：酥脆厚切炸豬排定食。
-
-### 20:30 - 21:30【Depot Island 夜景漫步】
-* 分類：逛街
-* 地點：Depot Island
-* 說明：穿梭美式復古燈火街區拍照，散步回飯店休息。
-
----
-
-## Day 4：9/29（二）晨間北谷玩水・永旺夢樂城寶可夢・中城公園放電・精緻燒肉
-* 住宿：美國村周邊飯店
-
-### 08:00 - 08:30【早餐：沖繩飯糰】
-* 分類：美食
-* 地點：Pokutam 美國村
-* 說明：美國村周邊外帶剛出爐的 Pokutam 沖繩豬肉蛋飯糰，換好泳衣準備出發。
-
-### 08:30 - 10:30【玩水 2 小時：北谷公園 / 落日海灘（Sunset Beach）】
-* 分類：重點景點
-* 地點：日落海灘
-* 說明：飯店旁海灘踏浪、游泳、堆沙堡徹底放電，早晨海水乾淨平靜、氣溫舒適。
-
-### 10:30 - 11:30【回飯店沖洗更衣】
-* 分類：休閒
-* 地點：美濱美國村
-* 說明：走回飯店房間洗熱水澡、吹乾頭髮，換穿乾爽便服準備出發。
-
-### 11:30 - 12:00【出發前往永旺夢樂城】
-* 分類：交通
-* 地點：AEON MALL Okinawa Rycom
-* 說明：開車前往北中城村 AEON MALL Okinawa Rycom（車程約 15～20 分鐘，免費停車）。
-
-### 12:00 - 15:30【中餐 ＆ 寶可夢中心 ＆ 逛街採買：AEON MALL（縮短 1 小時）】
-* 分類：重點景點/美食
-* 地點：Pokemon Center Okinawa
-* 說明：
-推薦 1（厚切牛舌）：炭燒牛舌 仙台利久（3F，經典炭烤牛舌定食配熱麥飯與牛尾湯）。
-推薦 2（美式牛排）：JUMBO STEAK HAN’S（4F，多汁沖繩在地特色大牛排）。
-遊樂與購物：
-參觀 1 樓挑高巨大的海水魚大水族箱。
-造訪全沖繩唯一的 Pokemon Center（寶可夢中心 1F），挑選沖繩限定花襯衫皮卡丘與周邊。
-逛童裝、服飾、電器或超市補貨。
-
-### 15:30 - 15:45【開車前往中城公園】
-* 分類：交通
-* 地點：中城公園
-* 說明：從永旺夢樂城開車約 10～12 分鐘抵達中城公園（備有免費停車場）。
-
-### 15:45 - 17:15【遊樂：中城公園放電 1.5 小時】
-* 分類：重點景點
-* 地點：中城公園
-* 說明：挑戰西區超巨型白色彈跳床（巨蛋彈跳網），並暢玩多座大型滾輪溜滑梯與攀爬遊具。
-
-### 17:15 - 17:45【返回美國村放戰利品】
-* 分類：休閒
-* 地點：美濱美國村
-* 說明：開車回美國村飯店（車程約 20～25 分鐘），放好商場戰利品、稍作梳洗。
-
-### 17:45 - 18:30【美國村海濱夕陽漫步】
-* 分類：休閒
-* 地點：美濱美國村
-* 說明：沿著海岸步道散步，欣賞北谷海濱落日與彩霞。
-
-### 18:30 - 20:30【晚餐：美國村頂級燒肉二選一】
-* 分類：美食
-* 地點：琉球之牛 美國村
-* 說明：
-選項 1（頂級和牛）：琉球之牛 美國村店（頂級和牛極致享受，強烈建議預約）。
-選項 2（高 CP 值燒肉）：博多燒肉 天神（高品質肉品與親民價格，人氣極高）。
-
-### 20:30 起【Depot Island 夜景散策 ＆ 回房打包】
-* 分類：休閒
-* 地點：Depot Island
-* 說明：享受最後一晚的美式霓虹夜景，回飯店打包行李準備隔天返台。
-
----
-
-## Day 5：9/30（三）瀨長島賞機・那霸機場午餐伴手禮・返台
-* 住宿：溫暖的家
-
-### 08:45 - 09:15【退房南下】
-* 分類：交通
-* 地點：瀨長島 Umikaji Terrace
-* 說明：辦理退房，沿 58 號公路南下開往那霸方向（車程約 40 分鐘）。
-
-### 09:30 - 10:30【瀨長島 Umikaji Terrace】
-* 分類：重點景點
-* 地點：瀨長島 Umikaji Terrace
-* 說明：純白希臘風階梯聚落吹海風、喝果汁，近距離看大客機從眼前低空呼嘯降落。
-
-### 10:30 - 11:15【加油還車 ＆ 機場接駁】
-* 分類：交通
-* 地點：那霸機場 租車還車處
-* 說明：於機場周邊加油站加滿油後至門市還車，搭乘租車公司免費接駁車前往那霸機場。
-
-### 11:15 - 13:00【那霸機場：報到 ＆ 中餐 ＆ 免稅伴手禮】
-* 分類：美食/購物
-* 地點：那霸機場 國際線航廈
-* 說明：抵達國際線航廈辦理登機與托運行李。中餐於航廈美食街用餐；商店街採買紅芋塔、雪鹽夾心餅等最後伴手禮。
-
-### 13:25 - 14:00【飛行時間】
-* 分類：交通
-* 地點：桃園國際機場
-* 說明：搭乘 13:25 班機（OKA ➔ TPE），下午 14:00 順利返抵台灣桃園機場。`;
-
     let tripData = [];
     let currentDayIdx = 0;
     let checkedItems = JSON.parse(localStorage.getItem('okinawa_trip_checked') || '{}');
 
-<<<<<<< HEAD
     // 解析 itinerary.md 的專用解析器（支援 ### 主行程 與 #### 子項目）
     function parseMarkdown(mdText) {
       const lines = mdText.split(/\r?\n/);
@@ -509,25 +103,10 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
       let currentDay = null;
       let currentItem = null;
       let currentSubItem = null;
-=======
-    // 正則匹配候選/順位項（例如：順位 1（首選推薦）：Taco Rice Cafe Kijimuna 或 選項 1（迴轉壽司）：Gourmet...）
-    const candidateRegex = /^(?:順位\s*\d+|選項\s*\d+|推薦\s*\d+|備案\s*\d*)(?:[（(].*?[）)])?[:：]\s*(.*)$/;
-
-    function parseMarkdown(mdText) {
-      const lines = mdText.split('\n');
-      let title = "沖繩 5D4N 親子自駕慢活之旅";
-      let subtitle = "2026/09/26（六）- 09/30（三）";
-      const days = [];
-      let currentDay = null;
-      let currentItem = null;
-      let itemIdCounter = 1;
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
 
       for (let i = 0; i < lines.length; i++) {
-        let line = lines[i].trim();
-        if (!line) continue;
+        const line = lines[i].trim();
 
-<<<<<<< HEAD
         // 匹配 Day 標題: ## Day 1：9/26（六）初抵沖繩・預約和牛燒肉盛宴
         const dayMatch = line.match(/^##\s+Day\s*(\d+)[：:]\s*(.+)/i);
         if (dayMatch) {
@@ -568,60 +147,6 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
           currentDay.items.push(currentItem);
           currentSubItem = null;
           continue;
-=======
-        if (line.startsWith('# ')) {
-          title = line.replace('# ', '').trim();
-        } else if (line.startsWith('> 日期：')) {
-          subtitle = line.replace('> 日期：', '').trim();
-        } else if (line.startsWith('## Day')) {
-          const dayMatch = line.match(/^##\s*Day\s*(\d+)[:：]\s*(.*?)\s+(.*)$/);
-          if (dayMatch) {
-            currentDay = {
-              day: parseInt(dayMatch[1], 10),
-              date: dayMatch[2].trim(),
-              title: dayMatch[3].trim(),
-              badge: "住宿：未定",
-              items: []
-            };
-          } else {
-            currentDay = {
-              day: days.length + 1,
-              date: "",
-              title: line.replace('## ', '').trim(),
-              badge: "住宿：未定",
-              items: []
-            };
-          }
-          days.push(currentDay);
-          currentItem = null;
-        } else if (line.startsWith('* 住宿：') && currentDay) {
-          currentDay.badge = line.replace('* ', '').trim();
-        } else if (line.startsWith('### ') && currentDay) {
-          const itemMatch = line.match(/^###\s*(.*?)【(.*?)】/);
-          currentItem = {
-            id: `item-${itemIdCounter++}`,
-            time: itemMatch ? itemMatch[1].trim() : "",
-            title: itemMatch ? itemMatch[2].trim() : line.replace('### ', '').trim(),
-            tag: "行程",
-            location: "",
-            desc: "",
-            options: [] // 儲存多選項候選陣列
-          };
-          currentDay.items.push(currentItem);
-        } else if (currentItem) {
-          if (line.startsWith('* 分類：')) {
-            currentItem.tag = line.replace('* 分類：', '').trim();
-          } else if (line.startsWith('* 地點：')) {
-            currentItem.location = line.replace('* 地點：', '').trim();
-          } else if (line.startsWith('* 說明：')) {
-            const descContent = line.replace('* 說明：', '').trim();
-            if (descContent) processItemLine(currentItem, descContent);
-          } else if (line.startsWith('* ')) {
-            processItemLine(currentItem, line.replace('* ', '').trim());
-          } else {
-            processItemLine(currentItem, line);
-          }
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
         }
 
         // 匹配子項目: #### [順位 1（首選推薦）] Taco Rice Cafe Kijimuna
@@ -636,7 +161,6 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
             name = tagMatch[2].trim();
           }
 
-<<<<<<< HEAD
           currentSubItem = {
             name: name,
             tag: tag,
@@ -709,167 +233,39 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
     }
 
     // 渲染卡片內容
-=======
-    // 判斷是否為優先順序 / 多選項結構，若是則單獨抽為獨立卡片資料
-    function processItemLine(item, text) {
-      const match = text.match(candidateRegex);
-      if (match) {
-        // 抓出標籤（如 "順位 1（首選推薦）"）
-        const colonIdx = text.indexOf('：') !== -1 ? text.indexOf('：') : text.indexOf(':');
-        const badgePart = text.substring(0, colonIdx).trim();
-        const contentPart = text.substring(colonIdx + 1).trim();
-
-        // 嘗試從 contentPart 抽取名稱與說明：如 Taco Rice Cafe Kijimuna（1F，必吃招牌...）
-        let optName = contentPart;
-        let optDetail = "";
-        const parenIdx = contentPart.indexOf('（') !== -1 ? contentPart.indexOf('（') : contentPart.indexOf('(');
-
-        if (parenIdx !== -1) {
-          optName = contentPart.substring(0, parenIdx).trim();
-          optDetail = contentPart.substring(parenIdx + 1).replace(/[）)]$/, '').trim();
-        }
-
-        item.options.push({
-          badge: badgePart,
-          name: optName,
-          detail: optDetail || contentPart,
-          location: optName
-        });
-      } else {
-        // 一般常規說明
-        item.desc += (item.desc ? '\n' : '') + text;
-      }
-    }
-
-    async function loadItinerary() {
-      let mdContent = fallbackMarkdown;
-      try {
-        const response = await fetch('itinerary.md?t=' + new Date().getTime());
-        if (response.ok) {
-          mdContent = await response.text();
-        }
-      } catch (e) {
-        console.warn("無法 fetch itinerary.md（可能是本機 file:// 環境），自動切換至內建 fallback 數據。");
-      }
-
-      applyParsedMarkdown(mdContent);
-    }
-
-    function applyParsedMarkdown(mdText) {
-      const parsed = parseMarkdown(mdText);
-      tripData = parsed.days;
-
-      document.getElementById('siteTitle').innerText = parsed.title;
-      document.getElementById('siteSubtitle').innerText = parsed.subtitle;
-      document.getElementById('manualMdInput').value = mdText;
-
-      buildTabs();
-      render();
-    }
-
-    // 建立頂部頁籤
-    function buildTabs() {
-      const tabNav = document.getElementById('tabNav');
-      tabNav.innerHTML = '';
-
-      tripData.forEach((d, idx) => {
-        const btn = document.createElement('button');
-        const isCurrent = idx === currentDayIdx;
-        btn.className = `tab-btn shrink-0 px-3.5 py-1.5 rounded-xl text-xs md:text-sm font-bold transition flex items-center gap-1.5 ${
-          isCurrent 
-            ? "bg-white text-sky-700 shadow-sm" 
-            : "bg-white/15 hover:bg-white/25 text-white"
-        }`;
-        
-        btn.innerHTML = `<span>Day ${d.day}</span><span class="text-[11px] font-normal opacity-90">${d.date.split('（')[0]}</span>`;
-        btn.onclick = () => switchTab(idx);
-        tabNav.appendChild(btn);
-      });
-    }
-
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
     function render() {
       const container = document.getElementById('itineraryContainer');
-      const searchInput = document.getElementById('searchInput');
-      const searchTerm = searchInput.value.trim().toLowerCase();
-      const clearBtn = document.getElementById('clearSearchBtn');
-      const daySummaryCard = document.getElementById('daySummaryCard');
-
-      if (searchTerm) {
-        clearBtn.classList.remove('hidden');
-      } else {
-        clearBtn.classList.add('hidden');
-      }
+      const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
 
       if (!tripData || tripData.length === 0) {
         container.innerHTML = `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl">沒有行程資料</div>`;
         return;
       }
 
-<<<<<<< HEAD
       // 全域搜尋模式
       if (searchTerm) {
         let resultsHTML = `<div class="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="ph ph-magnifying-glass"></i> 搜尋「${searchTerm}」的結果：</div>`;
         let found = false;
-=======
-      // 搜尋模式（跨所有天數）
-      if (searchTerm) {
-        daySummaryCard.classList.add('hidden');
-        let resultsHTML = `
-          <div class="flex items-center justify-between text-xs font-bold text-slate-500 mb-2 px-1">
-            <span>找到符合「${searchTerm}」的搜尋結果：</span>
-            <button onclick="clearSearch()" class="text-sky-600 hover:underline">清除搜尋</button>
-          </div>
-        `;
-        let count = 0;
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
 
         tripData.forEach(dayObj => {
           dayObj.items.forEach(item => {
-<<<<<<< HEAD
             const matchMain = item.title.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm) || item.location.toLowerCase().includes(searchTerm);
             const matchSub = item.subItems.some(s => s.name.toLowerCase().includes(searchTerm) || s.desc.toLowerCase().includes(searchTerm) || s.location.toLowerCase().includes(searchTerm));
 
             if (matchMain || matchSub) {
               found = true;
               resultsHTML += renderCard(item, dayObj.day);
-=======
-            const inOptions = item.options.some(o => 
-              o.name.toLowerCase().includes(searchTerm) || 
-              o.detail.toLowerCase().includes(searchTerm) ||
-              o.badge.toLowerCase().includes(searchTerm)
-            );
-
-            if (item.title.toLowerCase().includes(searchTerm) ||
-                item.desc.toLowerCase().includes(searchTerm) ||
-                item.time.toLowerCase().includes(searchTerm) ||
-                item.tag.toLowerCase().includes(searchTerm) ||
-                inOptions) {
-              count++;
-              resultsHTML += renderCard(item, dayObj.day, dayObj.date);
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
             }
           });
         });
 
-<<<<<<< HEAD
         if (!found) {
           resultsHTML += `<div class="p-8 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">未找到相符的景點或餐廳</div>`;
-=======
-        if (count === 0) {
-          resultsHTML += `
-            <div class="p-10 text-center text-slate-400 bg-white rounded-2xl border border-slate-100">
-              <i class="ph ph-magnifying-glass text-3xl mb-2 text-slate-300"></i>
-              <p class="text-sm">沒有找到符合「${searchTerm}」的行程項目</p>
-            </div>
-          `;
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
         }
         container.innerHTML = resultsHTML;
         return;
       }
 
-<<<<<<< HEAD
       // 依目前天數渲染
       const dayData = tripData[currentDayIdx];
       let html = `
@@ -883,27 +279,7 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
           </span>
         </div>
       `;
-=======
-      // 常規天數模式
-      const dayData = tripData[currentDayIdx];
-      daySummaryCard.classList.remove('hidden');
-      document.getElementById('dayBadge').innerText = `DAY ${dayData.day} ・ ${dayData.date}`;
-      document.getElementById('dayHeading').innerText = dayData.title;
-      
-      const hotelContainer = document.getElementById('hotelBadgeContainer');
-      if (dayData.badge) {
-        hotelContainer.innerHTML = `
-          <span class="inline-flex items-center gap-1.5 text-xs bg-sky-50 border border-sky-100 text-sky-700 px-3 py-1 rounded-xl font-medium self-start sm:self-auto">
-            <i class="ph-fill ph-bed text-sky-500"></i>
-            <span>${dayData.badge}</span>
-          </span>
-        `;
-      } else {
-        hotelContainer.innerHTML = '';
-      }
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
 
-      let html = '';
       dayData.items.forEach(item => {
         html += renderCard(item, dayData.day);
       });
@@ -912,7 +288,6 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
       updateProgress();
     }
 
-<<<<<<< HEAD
     // 渲染單個行程卡片（含子項目卡片）
     function renderCard(item, dayNum) {
       const isChecked = !!checkedItems[item.id];
@@ -953,94 +328,17 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
           </div>
         `;
       }
-=======
-    // 產生單一項目卡片，內含多選項 (Options) 渲染
-    function renderCard(item, dayNum, dayDate) {
-      const isChecked = !!checkedItems[item.id];
-      const mainMapLink = item.location
-        ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}`
-        : null;
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
-
-      // 產生選項卡片 HTML
-      let optionsHTML = '';
-      if (item.options && item.options.length > 0) {
-        optionsHTML = `
-          <div class="mt-3.5 pt-3 border-t border-slate-100/90 space-y-2">
-            <div class="text-[11px] font-bold text-slate-500 flex items-center gap-1">
-              <i class="ph-bold ph-git-fork text-amber-500"></i>
-              <span>精選推薦 / 候選順位：</span>
-            </div>
-            <div class="grid grid-cols-1 gap-2">
-        `;
-
-        item.options.forEach((opt, idx) => {
-          const optMapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(opt.location)}`;
-          const isTopPriority = opt.badge.includes('1') || opt.badge.includes('首選');
-
-          optionsHTML += `
-            <div class="p-2.5 rounded-xl border transition flex items-start justify-between gap-2.5 ${
-              isTopPriority 
-                ? 'bg-amber-50/70 border-amber-200/90' 
-                : 'bg-slate-50/80 border-slate-200/80'
-            }">
-              <div class="flex-1 min-w-0">
-                <div class="flex items-center gap-1.5 mb-1 flex-wrap">
-                  <span class="text-[11px] font-bold px-2 py-0.5 rounded-md ${
-                    isTopPriority 
-                      ? 'bg-amber-500 text-white shadow-2xs' 
-                      : 'bg-slate-200 text-slate-700'
-                  }">
-                    ${opt.badge}
-                  </span>
-                  <span class="text-xs font-bold text-slate-800 tracking-tight">
-                    ${opt.name}
-                  </span>
-                </div>
-                ${opt.detail && opt.detail !== opt.name ? `
-                  <p class="text-[11px] text-slate-600 leading-relaxed pl-0.5">
-                    ${opt.detail}
-                  </p>
-                ` : ''}
-              </div>
-
-              <!-- 專屬導航按鈕 -->
-              <a href="${optMapLink}" target="_blank" rel="noopener noreferrer" title="導航至 ${opt.name}"
-                 class="shrink-0 p-1.5 rounded-lg text-slate-400 hover:text-sky-600 hover:bg-white transition border border-transparent hover:border-slate-200">
-                <i class="ph-bold ph-navigation-arrow text-base"></i>
-              </a>
-            </div>
-          `;
-        });
-
-        optionsHTML += `
-            </div>
-          </div>
-        `;
-      }
 
       return `
-<<<<<<< HEAD
         <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:border-sky-200 transition ${isChecked ? 'opacity-60 bg-slate-50' : ''}">
           <div class="flex items-start justify-between gap-3">
             <!-- 勾選框 -->
             <button onclick="toggleCheck('${item.id}')" class="mt-0.5 text-xl transition transform active:scale-90 shrink-0 ${isChecked ? 'text-emerald-500' : 'text-slate-300 hover:text-slate-400'}">
-=======
-        <div class="bg-white rounded-2xl p-3.5 md:p-4 shadow-sm border border-slate-100 hover:border-sky-200 transition mb-3 ${
-          isChecked ? 'opacity-65 bg-slate-50/80' : ''
-        }">
-          <div class="flex items-start justify-between gap-3">
-            <!-- 勾選框 -->
-            <button onclick="toggleCheck('${item.id}')" class="mt-0.5 text-2xl transition transform active:scale-90 ${
-              isChecked ? 'text-emerald-500' : 'text-slate-300 hover:text-slate-400'
-            }">
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
               <i class="ph-fill ${isChecked ? 'ph-check-circle' : 'ph-circle'}"></i>
             </button>
 
             <!-- 內容本體 -->
             <div class="flex-1 min-w-0">
-<<<<<<< HEAD
               <div class="flex flex-wrap items-center gap-2 mb-1">
                 <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md flex items-center gap-1 border border-sky-100/50">
                   <i class="ph ph-clock"></i> ${item.time}
@@ -1051,29 +349,6 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
               </div>
 
               <h3 class="text-sm md:text-base font-bold text-slate-800 ${isChecked ? 'line-through text-slate-400' : ''}">
-=======
-              <div class="flex flex-wrap items-center gap-1.5 mb-1">
-                ${item.time ? `
-                  <span class="text-[11px] md:text-xs font-bold text-sky-700 bg-sky-50 px-2.5 py-0.5 rounded-md flex items-center gap-1">
-                    <i class="ph ph-clock"></i> ${item.time}
-                  </span>
-                ` : ''}
-                ${item.tag ? `
-                  <span class="text-[11px] md:text-xs font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
-                    ${item.tag}
-                  </span>
-                ` : ''}
-                ${dayDate ? `
-                  <span class="text-[11px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
-                    Day ${dayNum} (${dayDate})
-                  </span>
-                ` : ''}
-              </div>
-
-              <h3 class="text-sm md:text-base font-bold text-slate-800 ${
-                isChecked ? 'line-through text-slate-400' : ''
-              }">
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
                 ${item.title}
               </h3>
 
@@ -1083,7 +358,6 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
                 </p>
               ` : ''}
 
-<<<<<<< HEAD
               <!-- 候選子項目卡片清單 -->
               ${subItemsHTML}
             </div>
@@ -1092,17 +366,6 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
             ${mainMapLink ? `
               <a href="${mainMapLink}" target="_blank" rel="noopener noreferrer" title="開啟 Google 地圖" class="shrink-0 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition">
                 <i class="ph-bold ph-navigation-arrow text-lg"></i>
-=======
-              <!-- 嵌入候選方案多選項卡片 -->
-              ${optionsHTML}
-            </div>
-
-            <!-- 主景點 Google Maps 導航 -->
-            ${mainMapLink ? `
-              <a href="${mainMapLink}" target="_blank" rel="noopener noreferrer" title="導航至 ${item.location}"
-                 class="shrink-0 p-2 text-slate-400 hover:text-sky-600 hover:bg-sky-50 rounded-xl transition">
-                <i class="ph-bold ph-navigation-arrow text-xl"></i>
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
               </a>
             ` : ''}
           </div>
@@ -1112,15 +375,9 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
 
     function switchTab(idx) {
       currentDayIdx = idx;
-<<<<<<< HEAD
       document.getElementById('searchInput').value = '';
       renderTabs();
-=======
-      clearSearch(false);
-      buildTabs();
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
       render();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function toggleCheck(id) {
@@ -1145,32 +402,10 @@ Wonder Museum：超人氣室內科學互動探索館，操作豐富益智機關�
 
       const percentage = total === 0 ? 0 : Math.round((completed / total) * 100);
       document.getElementById('progressBar').style.width = `${percentage}%`;
-      document.getElementById('progressText').innerText = `${completed} / ${total} (${percentage}%)`;
+      document.getElementById('progressText').innerText = `${completed} / ${total} 完成 (${percentage}%)`;
     }
 
-    function clearSearch(shouldRender = true) {
-      document.getElementById('searchInput').value = '';
-      if (shouldRender) render();
-    }
-
-    function toggleMdModal() {
-      const modal = document.getElementById('mdModal');
-      modal.classList.toggle('hidden');
-    }
-
-    function applyManualMd() {
-      const val = document.getElementById('manualMdInput').value;
-      if (val.trim()) {
-        applyParsedMarkdown(val);
-        toggleMdModal();
-      }
-    }
-
-<<<<<<< HEAD
     // 搜尋即時監聽
-=======
-    // 即時關鍵字搜尋監聽
->>>>>>> 43ed291517fe0459523e074f260eca2f959c219d
     document.getElementById('searchInput').addEventListener('input', () => {
       render();
     });
