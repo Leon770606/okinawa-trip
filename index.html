@@ -30,10 +30,10 @@
     <div class="max-w-4xl mx-auto px-4 py-3 md:py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
       <div>
         <div class="flex items-center gap-2">
-          <i class="ph-fill ph-sun text-amber-300 text-2xl animate-spin-slow"></i>
+          <i class="ph-fill ph-sun text-amber-300 text-2xl"></i>
           <h1 id="tripTitle" class="text-xl md:text-2xl font-black tracking-wide">沖繩親子自駕・5天4夜度假全紀錄</h1>
         </div>
-        <p class="text-xs text-sky-100 mt-0.5">2026/09/26（五）- 09/30（二）｜ 與 itinerary.md 自動同步</p>
+        <p class="text-xs text-sky-100 mt-0.5">2026/09/26（五）- 09/30（二）｜ 與 itinerary.md 即時同步</p>
       </div>
 
       <!-- 快速搜尋框 -->
@@ -50,7 +50,7 @@
 
     <!-- Day Navigation Bar -->
     <div id="dayTabsContainer" class="max-w-4xl mx-auto px-4 overflow-x-auto custom-scrollbar flex gap-2 pb-2.5 pt-1">
-      <!-- 動態生成天數切換按鈕 -->
+      <!-- 動態生成天數按鈕 -->
     </div>
   </header>
 
@@ -78,15 +78,15 @@
       </div>
     </div>
 
-    <!-- 必備貼心提示區 -->
+    <!-- 備忘提示區 -->
     <div class="mt-8 bg-amber-50 border border-amber-200 rounded-2xl p-4 text-xs md:text-sm text-amber-900 space-y-2 shadow-sm">
       <div class="font-bold flex items-center gap-2 text-amber-800">
         <i class="ph-fill ph-warning-circle text-lg"></i> 自駕出遊重要備忘提醒：
       </div>
       <ul class="list-disc list-inside space-y-1 pl-1 text-slate-700 leading-relaxed">
         <li><strong>取車必備證件</strong>：台灣駕照「正本」＋ 日文譯本 ＋ 護照（缺一不可）。</li>
-        <li><strong>兒童安全座椅</strong>：未滿 6 歲孩童在日本法規上必須乘坐兒童安全座椅，取車確認安裝穩固。</li>
-        <li><strong>還車油料要求</strong>：Day 5 還車前需於營業所指定加油站「レギュラー（紅色 Regular 油槍）」加滿，並保留加油發票供門市確認。</li>
+        <li><strong>兒童安全座椅</strong>：未滿 6 歲孩童依法必備安全座椅，取車確認安裝穩固。</li>
+        <li><strong>足跡租車還車油料</strong>：Day 5 還車前需於營業所指定加油站「レギュラー（紅色 Regular 油槍）」加滿，並出示加油發票簽收。</li>
       </ul>
     </div>
   </main>
@@ -96,7 +96,7 @@
     let currentDayIdx = 0;
     let checkedItems = JSON.parse(localStorage.getItem('okinawa_trip_checked') || '{}');
 
-    // 解析 itinerary.md 的專用解析器（支援 ### 主行程 與 #### 子項目）
+    // 超高容錯 Markdown 解析器
     function parseMarkdown(mdText) {
       const lines = mdText.split(/\r?\n/);
       const days = [];
@@ -105,15 +105,16 @@
       let currentSubItem = null;
 
       for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
+        const rawLine = lines[i];
+        const line = rawLine.trim();
 
-        // 匹配 Day 標題: ## Day 1：9/26（六）初抵沖繩・預約和牛燒肉盛宴
-        const dayMatch = line.match(/^##\s+Day\s*(\d+)[：:]\s*(.+)/i);
+        // 匹配 Day 標題: ## Day 1：9/26（六）初抵沖繩...
+        const dayMatch = line.match(/^##\s+Day\s*(\d+)[：:\s]+(.+)/i);
         if (dayMatch) {
           currentDay = {
             day: parseInt(dayMatch[1]),
             rawTitle: dayMatch[2].trim(),
-            badge: "住宿待定",
+            badge: "住宿安排中",
             items: []
           };
           days.push(currentDay);
@@ -122,16 +123,24 @@
           continue;
         }
 
-        // 匹配住宿資訊: > **今日住宿**：[THE 皇家花園酒店 ICONIC 那霸]...
-        if (line.startsWith('> **今日住宿**：') && currentDay) {
-          currentDay.badge = line.replace('> **今日住宿**：', '').replace(/[\[\]]/g, '').trim();
+        // 高容錯匹配住宿資訊:
+        // 支援 > **今日住宿**：[飯店名]、> 住宿: 飯店名、**今日住宿**： 等各種格式
+        const hotelMatch = line.match(/(?:今日住宿|住宿)[：:\s]+(.+)/i);
+        if (hotelMatch && currentDay) {
+          let hotelName = hotelMatch[1].trim();
+          // 清除 Markdown 標籤、引號、中括號與星號
+          hotelName = hotelName.replace(/[\*\[\]>`"']/g, '').trim();
+          // 如果後方有額外備註或括號，保留主店名
+          if (hotelName) {
+            currentDay.badge = hotelName;
+          }
           continue;
         }
 
-        // 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】
-        const itemMatch = line.match(/^###\s+([\d:~\-–\s]+)【(.+?)】/);
+        // 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】 或 ### 10:00【退房出發】
+        const itemMatch = line.match(/^###\s+([\d:~\-–\s]+)?【(.+?)】/);
         if (itemMatch && currentDay) {
-          const timeStr = itemMatch[1].trim();
+          const timeStr = itemMatch[1] ? itemMatch[1].trim() : '';
           const titleStr = itemMatch[2].trim();
           const itemId = `d${currentDay.day}-${currentDay.items.length + 1}`;
 
@@ -171,9 +180,10 @@
           continue;
         }
 
-        // 匹配屬性條列: * 地點：xxx / * 推薦：xxx / * 說明：xxx
-        if (line.startsWith('* 地點：') || line.startsWith('- 地點：')) {
-          const loc = line.replace(/^[\*\-]\s*地點：\s*/, '').replace(/[\[\]]/g, '').trim();
+        // 匹配地點屬性
+        const locMatch = line.match(/^[\*\-]?\s*地點[：:]\s*(.+)/);
+        if (locMatch) {
+          const loc = locMatch[1].replace(/[\[\]]/g, '').trim();
           if (currentSubItem) {
             currentSubItem.location = loc;
           } else if (currentItem) {
@@ -182,8 +192,10 @@
           continue;
         }
 
-        if (line.startsWith('* 說明：') || line.startsWith('- 說明：') || line.startsWith('* 推薦：') || line.startsWith('- 推薦：')) {
-          const descText = line.replace(/^[\*\-]\s*(說明|推薦)：\s*/, '').trim();
+        // 匹配說明或推薦屬性
+        const descMatch = line.match(/^[\*\-]?\s*(?:說明|推薦)[：:]\s*(.+)/);
+        if (descMatch) {
+          const descText = descMatch[1].trim();
           if (currentSubItem) {
             currentSubItem.desc = (currentSubItem.desc ? currentSubItem.desc + ' ' : '') + descText;
           } else if (currentItem) {
@@ -192,7 +204,7 @@
           continue;
         }
 
-        // 一般條列或文字描述
+        // 一般條列內文
         if (line.startsWith('* ') || line.startsWith('- ')) {
           const pureText = line.replace(/^[\*\-]\s*/, '').trim();
           if (currentSubItem) {
@@ -207,17 +219,15 @@
       return days;
     }
 
-    // 根據標題自動判斷標籤
     function getTagFromTitle(title) {
-      if (title.includes('飛行') || title.includes('接駁') || title.includes('開車') || title.includes('移動') || title.includes('還車') || title.includes('退房')) return '交通';
-      if (title.includes('餐') || title.includes('燒肉') || title.includes('拉麵') || title.includes('飯糰') || title.includes('海鮮') || title.includes('壽司')) return '美食';
+      if (title.includes('飛行') || title.includes('接駁') || title.includes('開車') || title.includes('移動') || title.includes('還車') || title.includes('退房') || title.includes('取車')) return '交通';
+      if (title.includes('餐') || title.includes('燒肉') || title.includes('拉麵') || title.includes('飯糰') || title.includes('海鮮') || title.includes('壽司') || title.includes('牛舌')) return '美食';
       if (title.includes('水族館') || title.includes('玩水') || title.includes('海灘') || title.includes('動物園') || title.includes('公園') || title.includes('探索館')) return '玩樂';
-      if (title.includes('逛街') || title.includes('採買') || title.includes('血拚') || title.includes('唐吉訶德') || title.includes('玩具') || title.includes('寶可夢')) return '購物';
+      if (title.includes('逛街') || title.includes('採買') || title.includes('血拚') || title.includes('唐吉訶德') || title.includes('玩具') || title.includes('寶可夢') || title.includes('DFS')) return '購物';
       if (title.includes('Check-in') || title.includes('整裝') || title.includes('回房')) return '住宿/休憩';
       return '行程';
     }
 
-    // 渲染天數切換按鈕
     function renderTabs() {
       const container = document.getElementById('dayTabsContainer');
       container.innerHTML = tripData.map((d, idx) => {
@@ -232,7 +242,6 @@
       }).join('');
     }
 
-    // 渲染卡片內容
     function render() {
       const container = document.getElementById('itineraryContainer');
       const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -242,7 +251,6 @@
         return;
       }
 
-      // 全域搜尋模式
       if (searchTerm) {
         let resultsHTML = `<div class="text-xs font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="ph ph-magnifying-glass"></i> 搜尋「${searchTerm}」的結果：</div>`;
         let found = false;
@@ -266,7 +274,6 @@
         return;
       }
 
-      // 依目前天數渲染
       const dayData = tripData[currentDayIdx];
       let html = `
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
@@ -274,8 +281,8 @@
             <div class="text-xs font-black text-sky-600 uppercase tracking-wider">Day ${dayData.day}</div>
             <h2 class="text-base md:text-lg font-black text-slate-800">${dayData.rawTitle}</h2>
           </div>
-          <span class="inline-flex items-center gap-1.5 text-xs bg-sky-50 text-sky-700 px-3 py-1 rounded-full font-medium self-start sm:self-auto border border-sky-100 shrink-0">
-            <i class="ph-bold ph-bed"></i> ${dayData.badge}
+          <span class="inline-flex items-center gap-1.5 text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold self-start sm:self-auto border border-sky-100 shrink-0 shadow-2xs">
+            <i class="ph-fill ph-bed text-sky-500"></i> ${dayData.badge}
           </span>
         </div>
       `;
@@ -288,22 +295,20 @@
       updateProgress();
     }
 
-    // 渲染單個行程卡片（含子項目卡片）
     function renderCard(item, dayNum) {
       const isChecked = !!checkedItems[item.id];
       const mainMapLink = item.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}` : null;
 
-      // 渲染子項目卡片
       let subItemsHTML = '';
       if (item.subItems && item.subItems.length > 0) {
         subItemsHTML = `
           <div class="mt-3 space-y-2 border-t border-slate-100 pt-3">
             ${item.subItems.map(sub => {
               const subMapLink = sub.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(sub.location)}` : null;
-              const isPrimary = sub.tag.includes('順位 1') || sub.tag.includes('首選') || sub.tag.includes('步驟 1');
+              const isPrimary = sub.tag.includes('順位 1') || sub.tag.includes('首選') || sub.tag.includes('推薦 1') || sub.tag.includes('步驟 1');
               
               return `
-                <div class="rounded-xl p-2.5 transition border ${isPrimary ? 'bg-amber-50/70 border-amber-200' : 'bg-slate-50 border-slate-200/80'}">
+                <div class="rounded-xl p-2.5 transition border ${isPrimary ? 'bg-amber-50/80 border-amber-200' : 'bg-slate-50 border-slate-200/80'}">
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex-1 min-w-0">
                       <div class="flex items-center gap-1.5 flex-wrap mb-1">
@@ -340,9 +345,11 @@
             <!-- 內容本體 -->
             <div class="flex-1 min-w-0">
               <div class="flex flex-wrap items-center gap-2 mb-1">
-                <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md flex items-center gap-1 border border-sky-100/50">
-                  <i class="ph ph-clock"></i> ${item.time}
-                </span>
+                ${item.time ? `
+                  <span class="text-xs font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-md flex items-center gap-1 border border-sky-100/50">
+                    <i class="ph ph-clock"></i> ${item.time}
+                  </span>
+                ` : ''}
                 <span class="text-xs font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded-md">
                   ${item.tag}
                 </span>
@@ -358,7 +365,7 @@
                 </p>
               ` : ''}
 
-              <!-- 候選子項目卡片清單 -->
+              <!-- 候選子項目卡片 -->
               ${subItemsHTML}
             </div>
 
@@ -405,12 +412,10 @@
       document.getElementById('progressText').innerText = `${completed} / ${total} 完成 (${percentage}%)`;
     }
 
-    // 搜尋即時監聽
     document.getElementById('searchInput').addEventListener('input', () => {
       render();
     });
 
-    // 載入行程 MD 檔案
     async function init() {
       try {
         const res = await fetch('itinerary.md?v=' + Date.now());
@@ -420,11 +425,11 @@
         renderTabs();
         render();
       } catch (err) {
-        console.warn('遠端讀取失敗，載入備用狀態：', err);
+        console.warn('遠端讀取失敗：', err);
         document.getElementById('itineraryContainer').innerHTML = `
           <div class="p-6 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900 text-sm leading-relaxed">
-            <p class="font-bold flex items-center gap-1.5"><i class="ph-fill ph-warning-circle text-lg"></i> 本地直接雙擊瀏覽器開啟限制提醒</p>
-            <p class="text-xs text-slate-600 mt-1">若您是在電腦本機端直接雙擊開啟 HTML，瀏覽器預設安全性設定（CORS）可能會阻擋讀取同目錄下的 <code>itinerary.md</code>。建議將檔案推送到 <strong>GitHub Pages</strong>，即可完全正常自動同步！</p>
+            <p class="font-bold flex items-center gap-1.5"><i class="ph-fill ph-warning-circle text-lg"></i> 讀取提醒</p>
+            <p class="text-xs text-slate-600 mt-1">無法自動取得 <code>itinerary.md</code>。若是本地直接開啟，請推送到 GitHub Pages 即可正常自動讀取！</p>
           </div>
         `;
       }
