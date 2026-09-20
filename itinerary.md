@@ -47,8 +47,8 @@
 
 ### 10:45 - 11:30【分頭行動：老爸取車 ＆ 媽媽帶小孩回房整裝】
 #### [關鍵步驟 1] 老爸 11:30 準時辦理取車手續
-* 地點：沖繩租車營業所
-* 說明：10:45 出發前往門市，備妥台灣駕照正本、日文譯本與護照。確認汽油種類、安裝兩張兒童安全座椅，並進行全車錄影驗車。
+* 地點：[Footprint 沖繩足跡租車那霸店](https://maps.google.com/?cid=17826759070571046586&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ)
+* 說明：10:45 出發前往足跡租車那霸店（沖縄県那覇市金城3丁目8-11），備妥台灣駕照正本、日文譯本與護照。確認汽油種類、安裝兩張兒童安全座椅，並進行全車錄影驗車。
 #### [關鍵步驟 2] 媽媽帶小孩回房梳洗整裝
 * 地點：[THE 皇家花園酒店 ICONIC 那霸](https://www.google.com/maps/place/THE%E7%9A%87%E5%AE%B6%E8%8A%B1%E5%9C%92%E9%85%92%E5%BA%97ICONIC+%E9%82%A3%E9%9C%B8/@26.215271,127.675467,705m/data=!3m2!1e3!5s0x34e5699db26ed48d:0xc5c0f00aafd3d8bb!4m10!3m9!1s0x34e5690012622ad3:0x7eaa89ea2bc3be84!5m3!1s2026-12-10!4m1!1i2!8m2!3d26.214441!4d127.6786351!16s%2Fg%2F11ywksz77r?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D)
 * 說明：10:45 離開泳池回房沖洗，換穿外出便服，備齊外出隨身背包。
@@ -249,11 +249,11 @@
 * 說明：在飯店悠閒享用早餐、喝咖啡看海景，全家回房進行最後行李整理與封箱。
 
 ### 10:00 - 10:45【退房南下】
-* 地點：沖繩足跡租車那霸店
+* 地點：[Footprint 沖繩足跡租車那霸店](https://maps.google.com/?cid=17826759070571046586&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ)
 * 說明：辦理退房，沿 58 號公路南下開往那霸足跡租車門市（車程約 35～40 分鐘）。
 
 ### 10:45 - 11:30【加油加滿 ＆ 足跡租車還車 ＆ 接駁專車前往機場】
-* 地點：沖繩足跡租車那霸店
+* 地點：[Footprint 沖繩足跡租車那霸店](https://maps.google.com/?cid=17826759070571046586&g_mp=Cidnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaFRleHQ)
 * 說明：於門市指定加油站「レギュラー（紅色 Regular 油槍）」加滿油並保留發票。至門市點交還車後，搭乘足跡租車提供的專屬免費接駁專車直達那霸機場（約 10～15 分鐘車程）。
 
 ### 11:30 - 13:00【那霸機場：報到 ＆ 中餐 ＆ 免稅伴手禮】
