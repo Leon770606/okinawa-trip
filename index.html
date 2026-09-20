@@ -50,7 +50,7 @@
 
     <!-- Day Navigation Bar -->
     <div id="dayTabsContainer" class="max-w-4xl mx-auto px-4 overflow-x-auto custom-scrollbar flex gap-2 pb-2.5 pt-1">
-      <!-- 動態生成天數按鈕 -->
+      <!-- 動態生成天數切換按鈕 -->
     </div>
   </header>
 
@@ -106,7 +106,7 @@
       return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanLoc)}`;
     }
 
-    // 超高容錯 Markdown 解析器
+    // 健壯解析 Markdown
     function parseMarkdown(mdText) {
       const lines = mdText.split(/\r?\n/);
       const days = [];
@@ -115,10 +115,9 @@
       let currentSubItem = null;
 
       for (let i = 0; i < lines.length; i++) {
-        const rawLine = lines[i];
-        const line = rawLine.trim();
+        const line = lines[i].trim();
 
-        // 匹配 Day 標題: ## Day 1：9/26（六）初抵沖繩...
+        // 1. 匹配 Day 標題: ## Day 1：9/26（五）初抵沖繩...
         const dayMatch = line.match(/^##\s+Day\s*(\d+)[：:\s]+(.+)/i);
         if (dayMatch) {
           currentDay = {
@@ -134,22 +133,36 @@
           continue;
         }
 
-        // 匹配住宿資訊（支援 [飯店名](GoogleMap網址) 或純文字）
-        const hotelMatch = line.match(/(?:今日住宿|住宿)[：:\s]+(.+)/i);
-        if (hotelMatch && currentDay) {
-          const hotelContent = hotelMatch[1].trim();
-          const linkMatch = hotelContent.match(/\[(.*?)\]\((.*?)\)/);
-          if (linkMatch) {
-            currentDay.badge = linkMatch[1].trim();
-            currentDay.badgeUrl = linkMatch[2].trim();
-          } else {
-            let hotelName = hotelContent.replace(/[\*\[\]>`"']/g, '').trim();
-            if (hotelName) currentDay.badge = hotelName;
+        // 2. 匹配住宿資訊（超強容錯字串解析）
+        if ((line.includes('今日住宿') || line.includes('住宿')) && currentDay) {
+          // 擷取冒號後方全部文字
+          let colonIdx = line.indexOf('：');
+          if (colonIdx === -1) colonIdx = line.indexOf(':');
+
+          if (colonIdx !== -1) {
+            const rawHotelStr = line.substring(colonIdx + 1).trim();
+
+            // 檢查是否含有 [飯店名](網址)
+            const openBracket = rawHotelStr.indexOf('[');
+            const closeBracket = rawHotelStr.indexOf(']');
+            const openParen = rawHotelStr.indexOf('(', closeBracket);
+            const closeParen = rawHotelStr.lastIndexOf(')');
+
+            if (openBracket !== -1 && closeBracket !== -1 && openParen !== -1 && closeParen !== -1 && closeParen > openParen) {
+              currentDay.badge = rawHotelStr.substring(openBracket + 1, closeBracket).trim();
+              currentDay.badgeUrl = rawHotelStr.substring(openParen + 1, closeParen).trim();
+            } else {
+              // 純文字清洗
+              const cleanName = rawHotelStr.replace(/[\*\[\]>`"']/g, '').trim();
+              if (cleanName) {
+                currentDay.badge = cleanName;
+              }
+            }
           }
           continue;
         }
 
-        // 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】
+        // 3. 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】
         const itemMatch = line.match(/^###\s+([\d:~\-–\s]+)?【(.+?)】/);
         if (itemMatch && currentDay) {
           const timeStr = itemMatch[1] ? itemMatch[1].trim() : '';
@@ -170,7 +183,7 @@
           continue;
         }
 
-        // 匹配子項目: #### [順位 1（首選推薦）] Taco Rice Cafe Kijimuna
+        // 4. 匹配子項目: #### [順位 1（首選推薦）] Taco Rice Cafe Kijimuna
         const subMatch = line.match(/^####\s+(.+)/);
         if (subMatch && currentItem) {
           const rawSubTitle = subMatch[1].trim();
@@ -192,16 +205,25 @@
           continue;
         }
 
-        // 匹配地點屬性
-        const locMatch = line.match(/^[\*\-]?\s*地點[：:]\s*(.+)/);
-        if (locMatch) {
-          let loc = locMatch[1].trim();
-          const linkMatch = loc.match(/\[(.*?)\]\((.*?)\)/);
-          if (linkMatch) {
-            loc = linkMatch[2].trim();
+        // 5. 匹配地點屬性
+        if (line.includes('地點：') || line.includes('地點:')) {
+          let colonIdx = line.indexOf('：');
+          if (colonIdx === -1) colonIdx = line.indexOf(':');
+          const rawLocStr = line.substring(colonIdx + 1).trim();
+
+          let loc = rawLocStr;
+          // 解析 [名稱](網址)
+          const openBracket = rawLocStr.indexOf('[');
+          const closeBracket = rawLocStr.indexOf(']');
+          const openParen = rawLocStr.indexOf('(', closeBracket);
+          const closeParen = rawLocStr.lastIndexOf(')');
+
+          if (openBracket !== -1 && closeBracket !== -1 && openParen !== -1 && closeParen !== -1 && closeParen > openParen) {
+            loc = rawLocStr.substring(openParen + 1, closeParen).trim();
           } else {
-            loc = loc.replace(/[\[\]]/g, '').trim();
+            loc = rawLocStr.replace(/[\[\]]/g, '').trim();
           }
+
           if (currentSubItem) {
             currentSubItem.location = loc;
           } else if (currentItem) {
@@ -210,10 +232,12 @@
           continue;
         }
 
-        // 匹配說明或推薦屬性
-        const descMatch = line.match(/^[\*\-]?\s*(?:說明|推薦)[：:]\s*(.+)/);
-        if (descMatch) {
-          const descText = descMatch[1].trim();
+        // 6. 匹配說明或推薦屬性
+        if (line.includes('說明：') || line.includes('說明:') || line.includes('推薦：') || line.includes('推薦:')) {
+          let colonIdx = line.indexOf('：');
+          if (colonIdx === -1) colonIdx = line.indexOf(':');
+          const descText = line.substring(colonIdx + 1).trim();
+
           if (currentSubItem) {
             currentSubItem.desc = (currentSubItem.desc ? currentSubItem.desc + ' ' : '') + descText;
           } else if (currentItem) {
@@ -222,7 +246,7 @@
           continue;
         }
 
-        // 一般條列內文
+        // 7. 一般內文條列
         if (line.startsWith('* ') || line.startsWith('- ')) {
           const pureText = line.replace(/^[\*\-]\s*/, '').trim();
           if (currentSubItem) {
