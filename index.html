@@ -96,6 +96,16 @@
     let currentDayIdx = 0;
     let checkedItems = JSON.parse(localStorage.getItem('okinawa_trip_checked') || '{}');
 
+    // 解析 Google 地圖連結或文字地標
+    function resolveMapUrl(rawLoc) {
+      if (!rawLoc) return null;
+      const cleanLoc = rawLoc.trim();
+      if (cleanLoc.startsWith('http://') || cleanLoc.startsWith('https://')) {
+        return cleanLoc;
+      }
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cleanLoc)}`;
+    }
+
     // 超高容錯 Markdown 解析器
     function parseMarkdown(mdText) {
       const lines = mdText.split(/\r?\n/);
@@ -115,6 +125,7 @@
             day: parseInt(dayMatch[1]),
             rawTitle: dayMatch[2].trim(),
             badge: "住宿安排中",
+            badgeUrl: null,
             items: []
           };
           days.push(currentDay);
@@ -123,21 +134,22 @@
           continue;
         }
 
-        // 高容錯匹配住宿資訊:
-        // 支援 > **今日住宿**：[飯店名]、> 住宿: 飯店名、**今日住宿**： 等各種格式
+        // 匹配住宿資訊（支援 [飯店名](GoogleMap網址) 或純文字）
         const hotelMatch = line.match(/(?:今日住宿|住宿)[：:\s]+(.+)/i);
         if (hotelMatch && currentDay) {
-          let hotelName = hotelMatch[1].trim();
-          // 清除 Markdown 標籤、引號、中括號與星號
-          hotelName = hotelName.replace(/[\*\[\]>`"']/g, '').trim();
-          // 如果後方有額外備註或括號，保留主店名
-          if (hotelName) {
-            currentDay.badge = hotelName;
+          const hotelContent = hotelMatch[1].trim();
+          const linkMatch = hotelContent.match(/\[(.*?)\]\((.*?)\)/);
+          if (linkMatch) {
+            currentDay.badge = linkMatch[1].trim();
+            currentDay.badgeUrl = linkMatch[2].trim();
+          } else {
+            let hotelName = hotelContent.replace(/[\*\[\]>`"']/g, '').trim();
+            if (hotelName) currentDay.badge = hotelName;
           }
           continue;
         }
 
-        // 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】 或 ### 10:00【退房出發】
+        // 匹配主行程: ### 19:30 - 21:00【晚餐：焼肉にく久（已訂位 19:30）】
         const itemMatch = line.match(/^###\s+([\d:~\-–\s]+)?【(.+?)】/);
         if (itemMatch && currentDay) {
           const timeStr = itemMatch[1] ? itemMatch[1].trim() : '';
@@ -183,7 +195,13 @@
         // 匹配地點屬性
         const locMatch = line.match(/^[\*\-]?\s*地點[：:]\s*(.+)/);
         if (locMatch) {
-          const loc = locMatch[1].replace(/[\[\]]/g, '').trim();
+          let loc = locMatch[1].trim();
+          const linkMatch = loc.match(/\[(.*?)\]\((.*?)\)/);
+          if (linkMatch) {
+            loc = linkMatch[2].trim();
+          } else {
+            loc = loc.replace(/[\[\]]/g, '').trim();
+          }
           if (currentSubItem) {
             currentSubItem.location = loc;
           } else if (currentItem) {
@@ -275,15 +293,32 @@
       }
 
       const dayData = tripData[currentDayIdx];
+      const hotelMapLink = resolveMapUrl(dayData.badgeUrl || (dayData.badge !== '溫暖的家' ? dayData.badge : null));
+
+      let badgeHTML = '';
+      if (hotelMapLink && dayData.badge !== '溫暖的家') {
+        badgeHTML = `
+          <a href="${hotelMapLink}" target="_blank" rel="noopener noreferrer" title="開啟飯店 Google Maps" class="inline-flex items-center gap-1.5 text-xs bg-sky-50 hover:bg-sky-100 text-sky-700 px-3 py-1.5 rounded-xl font-bold self-start sm:self-auto border border-sky-200 transition shrink-0 shadow-2xs group">
+            <i class="ph-fill ph-bed text-sky-600"></i>
+            <span>${dayData.badge}</span>
+            <i class="ph-bold ph-arrow-square-out text-sky-500 group-hover:translate-x-0.5 transition-transform"></i>
+          </a>
+        `;
+      } else {
+        badgeHTML = `
+          <span class="inline-flex items-center gap-1.5 text-xs bg-slate-100 text-slate-700 px-3 py-1.5 rounded-xl font-bold self-start sm:self-auto border border-slate-200 shrink-0">
+            <i class="ph-fill ph-house text-slate-500"></i> ${dayData.badge}
+          </span>
+        `;
+      }
+
       let html = `
         <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
           <div>
             <div class="text-xs font-black text-sky-600 uppercase tracking-wider">Day ${dayData.day}</div>
             <h2 class="text-base md:text-lg font-black text-slate-800">${dayData.rawTitle}</h2>
           </div>
-          <span class="inline-flex items-center gap-1.5 text-xs bg-sky-50 text-sky-700 px-3 py-1.5 rounded-xl font-bold self-start sm:self-auto border border-sky-100 shrink-0 shadow-2xs">
-            <i class="ph-fill ph-bed text-sky-500"></i> ${dayData.badge}
-          </span>
+          ${badgeHTML}
         </div>
       `;
 
@@ -297,14 +332,14 @@
 
     function renderCard(item, dayNum) {
       const isChecked = !!checkedItems[item.id];
-      const mainMapLink = item.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.location)}` : null;
+      const mainMapLink = resolveMapUrl(item.location);
 
       let subItemsHTML = '';
       if (item.subItems && item.subItems.length > 0) {
         subItemsHTML = `
           <div class="mt-3 space-y-2 border-t border-slate-100 pt-3">
             ${item.subItems.map(sub => {
-              const subMapLink = sub.location ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(sub.location)}` : null;
+              const subMapLink = resolveMapUrl(sub.location);
               const isPrimary = sub.tag.includes('順位 1') || sub.tag.includes('首選') || sub.tag.includes('推薦 1') || sub.tag.includes('步驟 1');
               
               return `
@@ -322,7 +357,7 @@
                       ${sub.desc ? `<p class="text-xs text-slate-600 leading-relaxed whitespace-pre-line">${sub.desc}</p>` : ''}
                     </div>
                     ${subMapLink ? `
-                      <a href="${subMapLink}" target="_blank" rel="noopener noreferrer" title="導航至 ${sub.location}" class="shrink-0 p-1.5 text-slate-400 hover:text-sky-600 hover:bg-white rounded-lg transition shadow-xs">
+                      <a href="${subMapLink}" target="_blank" rel="noopener noreferrer" title="導航至 ${sub.name}" class="shrink-0 p-1.5 text-slate-400 hover:text-sky-600 hover:bg-white rounded-lg transition shadow-xs">
                         <i class="ph-bold ph-navigation-arrow text-base"></i>
                       </a>
                     ` : ''}
